@@ -4,6 +4,7 @@ import { formatHype } from '../lib/format';
 import { useAuth } from '../lib/auth';
 import { sellUnits } from '../lib/hooks';
 import { ApiClientError } from '../lib/api';
+import SlideToConfirm from './SlideToConfirm';
 
 export interface SellTarget {
   id: string;
@@ -162,13 +163,13 @@ export default function SellSheet({ trend, unitsOwned, onClose, onSold }: Props)
 
             {error && <p className="mb-3 text-center text-xs font-medium text-accent-down">{error}</p>}
 
-            <button
-              onClick={handleSubmit}
-              disabled={numeric <= 0 || numeric > unitsOwned + 1e-9 || busy}
-              className="tap-scale w-full rounded-full bg-white py-3.5 text-sm font-bold text-black disabled:opacity-30"
-            >
-              {busy ? 'Selling…' : `Sell ${numeric > 0 ? numeric.toFixed(3) : ''} units`}
-            </button>
+            <SlideToConfirm
+              label={`Slide to sell ${numeric > 0 ? numeric.toFixed(3) : ''} units`}
+              onConfirm={handleSubmit}
+              disabled={numeric <= 0 || numeric > unitsOwned + 1e-9}
+              busy={busy}
+              accentColor="#ff5c5c"
+            />
           </>
         )}
       </div>

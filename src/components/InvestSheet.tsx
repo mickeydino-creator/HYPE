@@ -4,6 +4,7 @@ import { formatHype } from '../lib/format';
 import { useAuth } from '../lib/auth';
 import { investInTrend } from '../lib/hooks';
 import { ApiClientError } from '../lib/api';
+import SlideToConfirm from './SlideToConfirm';
 
 interface Props {
   trend: Trend | null;
@@ -150,13 +151,12 @@ export default function InvestSheet({ trend, onClose, onInvested }: Props) {
 
             {error && <p className="mb-3 text-center text-xs font-medium text-accent-down">{error}</p>}
 
-            <button
-              onClick={handleSubmit}
-              disabled={numeric <= 0 || busy}
-              className="tap-scale w-full rounded-full bg-white py-3.5 text-sm font-bold text-black disabled:opacity-30"
-            >
-              {busy ? 'Investing…' : `Invest ${amount ? formatHype(numeric) : ''} HYPE`}
-            </button>
+            <SlideToConfirm
+              label={`Slide to invest ${amount ? formatHype(numeric) : ''} HYPE`}
+              onConfirm={handleSubmit}
+              disabled={numeric <= 0}
+              busy={busy}
+            />
           </>
         )}
       </div>
