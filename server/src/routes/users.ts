@@ -12,7 +12,7 @@ usersRouter.get('/search', async (req, res, next) => {
     const q = String(req.query.q ?? '').trim();
     if (!q) return res.json({ users: [] });
     const users = await prisma.user.findMany({
-      where: { username: { contains: q }, suspended: false },
+      where: { username: { contains: q, mode: 'insensitive' }, suspended: false },
       take: 20,
     });
     res.json({ users: users.map(publicUser) });

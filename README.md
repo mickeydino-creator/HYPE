@@ -5,7 +5,7 @@ virtual currency called HYPE. There is no real money, no withdrawals, and
 no leaderboards — it's a purely social, purely virtual experience.
 
 This is a full-stack application: a React frontend backed by a real
-Express + SQLite (Prisma) API. All accounts, balances, trends, holdings,
+Express + PostgreSQL (Prisma) API. All accounts, balances, trends, holdings,
 transactions and prices are persisted server-side and work across sessions
 and devices — nothing important lives only in the browser.
 
@@ -14,9 +14,11 @@ and devices — nothing important lives only in the browser.
 **Frontend** — React 19 + TypeScript + Vite, Tailwind CSS, React Router,
 Recharts, Socket.IO client.
 
-**Backend** (`server/`) — Express + TypeScript, Prisma ORM over SQLite,
+**Backend** (`server/`) — Express + TypeScript, Prisma ORM over PostgreSQL,
 JWT auth in an httpOnly cookie, bcrypt password hashing, Zod validation,
-Multer for image uploads, Socket.IO for realtime price/feed updates.
+Multer for image uploads, Socket.IO for realtime price/feed updates. In
+production it also serves the built frontend, so the whole app runs as one
+deployable service.
 
 ## Architecture rule
 
@@ -43,6 +45,15 @@ balances is ever trusted from the client.
 computed on the fly from current holdings and live prices, not stored.
 
 ## Running locally
+
+You need a Postgres database. The easiest way is Docker:
+
+```bash
+docker compose up -d   # starts Postgres on localhost:5432
+```
+
+(No Docker? Point `DATABASE_URL` in `server/.env` at any Postgres instance
+you already have instead.)
 
 First time setup:
 
@@ -76,19 +87,54 @@ starting balance (1,000 HYPE by default, see `server/.env`).
 
 ## Environment variables (`server/.env`)
 
-See `server/.env.example`. Key ones: `DATABASE_URL` (SQLite file),
-`JWT_SECRET`, `CLIENT_ORIGIN` (CORS), `STARTING_BALANCE`.
+See `server/.env.example`. Key ones: `DATABASE_URL` (Postgres connection
+string), `JWT_SECRET`, `CLIENT_ORIGIN` (CORS — only matters if you deploy
+frontend and backend as separate origins), `STARTING_BALANCE`,
+`UPLOAD_DIR` (where uploaded trend images are stored on disk).
 
-## Building for production
+## Deploying to the cloud (Render)
+
+This repo includes a `render.yaml` Blueprint that deploys the whole app —
+API, realtime, and the built frontend — as a single Render web service,
+plus a managed Postgres database:
+
+1. Push this repo to GitHub.
+2. In the Render dashboard: **New +** → **Blueprint**, point it at the repo.
+3. Render provisions a free Postgres database and a web service, wires
+   `DATABASE_URL` between them automatically, generates a `JWT_SECRET`, runs
+   `npm run render-build` (builds the frontend, installs the server, runs
+   `prisma migrate deploy`), then starts it with `npm run render-start`.
+4. Once it's live, open the service URL, sign up, and you're running for
+   real — signed-up accounts, trades and trends all persist in the managed
+   Postgres database.
+
+**Uploaded images**: `render.yaml` attaches a small persistent disk
+(`UPLOAD_DIR=/var/data/uploads`) so trend cover images survive restarts and
+redeploys. Render disks require a paid instance (the blueprint uses
+`starter`); on the free plan, remove the `disk` block — the app still
+works, but uploaded images are lost whenever the service restarts (the
+database itself is unaffected, since it's a separate service).
+
+Prefer another host (Railway, Fly.io, a VPS, …)? The same two build/start
+commands work anywhere that can run Node 22 and reach a Postgres database:
 
 ```bash
-npm run build            # frontend -> dist/
-npm run build --prefix server   # backend -> server/dist/
+npm run render-build
+npm run render-start
 ```
 
-Serve the built frontend behind any static host and run
-`node --env-file=.env dist/index.js` from `server/` (after `npm run build`)
-for the API, or point them both at your own hosting/reverse proxy setup.
+Just set `DATABASE_URL`, `JWT_SECRET`, `STARTING_BALANCE` and (optionally)
+`UPLOAD_DIR` as real environment variables on whatever platform you use —
+mount a persistent volume for `UPLOAD_DIR` if that platform's filesystem
+isn't persistent across deploys.
+
+## Building for production locally
+
+```bash
+npm run build                    # frontend -> dist/
+npm run build --prefix server    # backend -> server/dist/
+npm run start:prod --prefix server   # serves the API + dist/ on one port
+```
 
 ## Features
 

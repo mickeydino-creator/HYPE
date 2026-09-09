@@ -2,14 +2,14 @@ import multer from 'multer';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import { env } from './env.js';
 
-const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+fs.mkdirSync(env.uploadDir, { recursive: true });
 
 const ALLOWED = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/gif']);
 
 const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
+  destination: (_req, _file, cb) => cb(null, env.uploadDir),
   filename: (_req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
     cb(null, `${crypto.randomUUID()}${ext}`);

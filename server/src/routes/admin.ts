@@ -34,7 +34,7 @@ adminRouter.get('/users', async (req, res, next) => {
   try {
     const q = String(req.query.q ?? '').trim();
     const users = await prisma.user.findMany({
-      where: q ? { username: { contains: q } } : undefined,
+      where: q ? { username: { contains: q, mode: 'insensitive' } } : undefined,
       orderBy: { createdAt: 'desc' },
       take: 200,
     });

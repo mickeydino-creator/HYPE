@@ -30,7 +30,7 @@ trendsRouter.get('/', async (req, res, next) => {
 
     const where: Record<string, unknown> = { removed: false };
     if (category && category !== 'All') where.category = category;
-    if (q) where.name = { contains: q };
+    if (q) where.name = { contains: q, mode: 'insensitive' };
 
     const trends = await prisma.trend.findMany({
       where,

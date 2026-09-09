@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import path from 'node:path';
+import fs from 'node:fs';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
 import { prisma } from './db.js';
@@ -27,7 +27,7 @@ app.use(cors({ origin: env.clientOrigin, credentials: true }));
 app.use(cookieParser());
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+app.use('/uploads', express.static(env.uploadDir));
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
@@ -37,9 +37,24 @@ app.use('/api/users', usersRouter);
 app.use('/api/portfolio', portfolioRouter);
 app.use('/api/admin', adminRouter);
 
-app.use((req, res) => {
+app.use('/api', (req, res) => {
   res.status(404).json({ error: `No route for ${req.method} ${req.path}` });
 });
+
+// Serve the built frontend when present, so the API and the app can run as
+// a single deployable service (the frontend uses same-origin relative
+// fetch/websocket paths, so no CORS setup is needed in that mode). Local
+// dev instead runs `vite` separately and proxies /api to this server.
+if (fs.existsSync(env.clientDistDir)) {
+  app.use(express.static(env.clientDistDir));
+  app.get('*', (_req, res) => {
+    res.sendFile('index.html', { root: env.clientDistDir });
+  });
+} else {
+  app.use((req, res) => {
+    res.status(404).json({ error: `No route for ${req.method} ${req.path}` });
+  });
+}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

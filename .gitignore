@@ -11,3 +11,5 @@ server/prisma/dev.db
 server/prisma/dev.db-journal
 server/uploads/*
 !server/uploads/.gitkeep
+
+# postgres local data (docker volume is external, nothing to ignore here)

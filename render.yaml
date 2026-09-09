@@ -1,0 +1,45 @@
+# Render Blueprint — deploys HYPE as a single web service (API + built
+# frontend) backed by a managed Postgres database.
+#
+# Usage: push this repo to GitHub, then in the Render dashboard choose
+# "New +" -> "Blueprint" and point it at the repo. Render reads this file
+# and provisions everything below automatically.
+#
+# Note on uploaded trend images: the `disk` block below persists them across
+# deploys/restarts, but Render disks require a paid instance type (Starter
+# or higher) — they are not available on the free plan. If you deploy on
+# the free plan, remove the `disk` block; uploaded images will then be lost
+# whenever the service restarts or redeploys (the database itself is
+# unaffected either way, since it lives on the separate Postgres service).
+
+databases:
+  - name: hype-db
+    databaseName: hype
+    user: hype
+    plan: free
+
+services:
+  - type: web
+    name: hype
+    runtime: node
+    plan: starter
+    buildCommand: npm run render-build
+    startCommand: npm run render-start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hype-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STARTING_BALANCE
+        value: "1000"
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+      - key: NODE_VERSION
+        value: "22"
+    disk:
+      name: hype-uploads
+      mountPath: /var/data
+      sizeGB: 1

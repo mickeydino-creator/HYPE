@@ -10,7 +10,9 @@
     "server:setup": "node -e \"const fs=require('fs');if(!fs.existsSync('server/.env'))fs.copyFileSync('server/.env.example','server/.env')\" && npm install --prefix server && npm run prisma:generate --prefix server && npm run prisma:migrate --prefix server && npm run seed --prefix server",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "render-build": "npm install && npm run build && npm install --prefix server && npm run prisma:generate --prefix server && npm run prisma:deploy --prefix server",
+    "render-start": "npm run start:prod --prefix server"
   },
   "dependencies": {
     "clsx": "^2.1.1",
