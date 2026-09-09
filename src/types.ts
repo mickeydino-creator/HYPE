@@ -1,65 +1,74 @@
-export type Category =
-  | 'Tech'
-  | 'Fashion'
-  | 'Music'
-  | 'Gaming'
-  | 'Lifestyle'
-  | 'Food'
-  | 'Sports'
-  | 'Art'
-  | 'Finance-Meme'
-  | 'Other';
-
 export interface PricePoint {
-  t: number; // timestamp
-  p: number; // price
+  t: number;
+  p: number;
 }
 
 export interface Trend {
   id: string;
   name: string;
   description: string;
-  category: Category;
   image: string;
+  category: string;
   creatorId: string;
-  createdAt: number;
+  creatorUsername: string;
+  creatorDisplayName: string;
+  creatorAvatar: string;
   price: number;
   startingPrice: number;
+  investorCount: number;
+  createdAt: string;
+  updatedAt: string;
+  change24h: number;
   history: PricePoint[];
-  investorIds: string[];
 }
 
-export interface Holding {
-  trendId: string;
-  units: number;
-  avgCost: number;
-}
-
-export interface ActivityItem {
-  id: string;
-  type: 'invest' | 'sell' | 'create';
-  trendId: string;
-  amount: number;
-  units: number;
-  price: number;
-  timestamp: number;
-}
-
-export interface User {
+export interface PublicUser {
   id: string;
   username: string;
   displayName: string;
   bio: string;
   avatar: string;
-  balance: number;
-  createdTrendIds: string[];
-  holdings: Holding[];
-  activity: ActivityItem[];
+  createdAt: string;
+  role: 'USER' | 'ADMIN';
 }
 
-export interface HypeState {
-  users: Record<string, User>;
-  currentUserId: string;
-  trends: Record<string, Trend>;
-  trendOrder: string[];
+export interface CurrentUser extends PublicUser {
+  email: string;
+  balance: number;
+  suspended: boolean;
+}
+
+export interface Position {
+  trendId: string;
+  trendName: string;
+  trendImage: string;
+  unitsOwned: number;
+  averageBuyPrice: number;
+  currentPrice: number;
+  value: number;
+  cost: number;
+  pl: number;
+  plPct: number;
+}
+
+export interface PortfolioSummary {
+  balance: number;
+  portfolioValue: number;
+  totalInvested: number;
+  totalPl: number;
+  totalPlPct: number;
+  netWorth: number;
+  positions: Position[];
+}
+
+export interface ActivityItem {
+  id: string;
+  type: 'BUY' | 'SELL' | 'CREATE';
+  trendId: string;
+  trendName: string;
+  trendImage: string;
+  units: number;
+  pricePerUnit: number;
+  totalValue: number;
+  createdAt: string;
 }

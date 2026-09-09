@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  displayName  String
+  bio          String   @default("")
+  avatar       String   @default("")
+  balance      Float    @default(1000)
+  role         Role     @default(USER)
+  suspended    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  trends       Trend[]        @relation("CreatedTrends")
+  holdings     Holding[]
+  transactions Transaction[]
+}
+
+model Category {
+  id   String @id @default(cuid())
+  name String @unique
+}
+
+model Trend {
+  id            String   @id @default(cuid())
+  name          String
+  description   String
+  image         String
+  category      String
+  creatorId     String
+  currentPrice  Float
+  startingPrice Float
+  investorCount Int      @default(0)
+  removed       Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  creator      User           @relation("CreatedTrends", fields: [creatorId], references: [id])
+  holdings     Holding[]
+  transactions Transaction[]
+  priceHistory PriceHistory[]
+
+  @@index([creatorId])
+  @@index([category])
+}
+
+model Holding {
+  id            String   @id @default(cuid())
+  userId        String
+  trendId       String
+  unitsOwned    Float
+  averageBuyPrice Float
+  updatedAt     DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id])
+  trend Trend @relation(fields: [trendId], references: [id])
+
+  @@unique([userId, trendId])
+  @@index([trendId])
+}
+
+enum TransactionType {
+  BUY
+  SELL
+  CREATE
+}
+
+model Transaction {
+  id           String          @id @default(cuid())
+  userId       String
+  trendId      String
+  type         TransactionType
+  units        Float
+  pricePerUnit Float
+  totalValue   Float
+  createdAt    DateTime        @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  trend Trend @relation(fields: [trendId], references: [id])
+
+  @@index([userId])
+  @@index([trendId])
+}
+
+model PriceHistory {
+  id        String   @id @default(cuid())
+  trendId   String
+  price     Float
+  timestamp DateTime @default(now())
+
+  trend Trend @relation(fields: [trendId], references: [id])
+
+  @@index([trendId, timestamp])
+}

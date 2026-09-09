@@ -1,17 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import type { Trend } from '../types';
 import { formatHype, formatPct } from '../lib/format';
-import { useStore } from '../lib/store';
 import PriceChart from './PriceChart';
 
 export default function TrendCard({ trend, onInvest }: { trend: Trend; onInvest: (trend: Trend) => void }) {
   const navigate = useNavigate();
-  const { getUser } = useStore();
-  const creator = getUser(trend.creatorId);
-
-  const first = trend.history[0]?.p ?? trend.price;
-  const change = first > 0 ? ((trend.price - first) / first) * 100 : 0;
-  const positive = change >= 0;
+  const positive = trend.change24h >= 0;
 
   return (
     <article
@@ -30,11 +24,11 @@ export default function TrendCard({ trend, onInvest }: { trend: Trend; onInvest:
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`/u/${trend.creatorId}`);
+                navigate(`/u/${trend.creatorUsername}`);
               }}
               className="text-sm text-white/70"
             >
-              @{creator?.username ?? 'unknown'}
+              @{trend.creatorUsername}
             </button>
           </div>
         </div>
@@ -50,7 +44,7 @@ export default function TrendCard({ trend, onInvest }: { trend: Trend; onInvest:
               <span className="text-xs font-semibold text-white/40">HYPE</span>
             </div>
             <span className={positive ? 'text-xs font-semibold text-accent-up' : 'text-xs font-semibold text-accent-down'}>
-              {positive ? '📈' : '📉'} {formatPct(change)}
+              {positive ? '📈' : '📉'} {formatPct(trend.change24h)}
             </span>
           </div>
           <div className="h-12 w-24">

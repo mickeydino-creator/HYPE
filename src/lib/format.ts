@@ -11,8 +11,9 @@ export function formatPct(value: number): string {
   return `${sign}${value.toFixed(1)}%`;
 }
 
-export function timeAgo(ts: number): string {
-  const diff = Date.now() - ts;
+export function timeAgo(ts: number | string): string {
+  const time = typeof ts === 'string' ? new Date(ts).getTime() : ts;
+  const diff = Date.now() - time;
   const min = Math.floor(diff / 60000);
   if (min < 1) return 'now';
   if (min < 60) return `${min}m`;

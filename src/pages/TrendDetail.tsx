@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import clsx from 'clsx';
-import { useStore } from '../lib/store';
+import { useTrend, usePortfolio } from '../lib/hooks';
 import { formatHype, timeAgo } from '../lib/format';
 import PriceChart from '../components/PriceChart';
 import InvestSheet from '../components/InvestSheet';
+import SellSheet from '../components/SellSheet';
 
 const RANGES = [
   { label: '1H', points: 15 },
@@ -14,12 +15,20 @@ const RANGES = [
 
 export default function TrendDetail() {
   const { id } = useParams();
-  const { getTrend, getUser, holdingFor } = useStore();
   const navigate = useNavigate();
-  const [sheetMode, setSheetMode] = useState<'invest' | 'sell' | null>(null);
+  const { data: trend, loading } = useTrend(id);
+  const [portfolioKey, setPortfolioKey] = useState(0);
+  const { data: portfolio } = usePortfolio(portfolioKey);
+  const [sheet, setSheet] = useState<'invest' | 'sell' | null>(null);
   const [range, setRange] = useState(RANGES[1]);
 
-  const trend = id ? getTrend(id) : undefined;
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-md px-4 pt-16 text-center">
+        <p className="text-white/40">Loading…</p>
+      </div>
+    );
+  }
 
   if (!trend) {
     return (
@@ -29,13 +38,13 @@ export default function TrendDetail() {
     );
   }
 
-  const creator = getUser(trend.creatorId);
-  const holding = holdingFor(trend.id);
-
-  const first = trend.history[0]?.p ?? trend.price;
-  const change = first > 0 ? ((trend.price - first) / first) * 100 : 0;
-  const positive = change >= 0;
+  const holding = portfolio?.positions.find((p) => p.trendId === trend.id);
+  const positive = trend.change24h >= 0;
   const chartData = trend.history.slice(-range.points);
+
+  function refreshAfterTrade() {
+    setPortfolioKey((k) => k + 1);
+  }
 
   return (
     <div className="pb-32">
@@ -55,9 +64,9 @@ export default function TrendDetail() {
         </div>
         <div className="absolute bottom-4 left-4 right-4">
           <h1 className="text-3xl font-extrabold tracking-tight">{trend.name}</h1>
-          <button onClick={() => navigate(`/u/${trend.creatorId}`)} className="mt-1 flex items-center gap-2">
-            <img src={creator?.avatar} alt="" className="h-5 w-5 rounded-full object-cover" />
-            <span className="text-sm text-white/70">@{creator?.username}</span>
+          <button onClick={() => navigate(`/u/${trend.creatorUsername}`)} className="mt-1 flex items-center gap-2">
+            <img src={trend.creatorAvatar} alt="" className="h-5 w-5 rounded-full object-cover" />
+            <span className="text-sm text-white/70">@{trend.creatorUsername}</span>
           </button>
         </div>
       </div>
@@ -71,7 +80,7 @@ export default function TrendDetail() {
             </div>
             <span className={clsx('text-sm font-semibold', positive ? 'text-accent-up' : 'text-accent-down')}>
               {positive ? '📈' : '📉'} {positive ? '+' : ''}
-              {change.toFixed(1)}%
+              {trend.change24h.toFixed(1)}%
             </span>
           </div>
           <div className="flex gap-1.5">
@@ -98,11 +107,11 @@ export default function TrendDetail() {
           <div className="mb-6 flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
             <div>
               <p className="text-xs text-white/40">Your position</p>
-              <p className="text-sm font-bold">{holding.units.toFixed(3)} units</p>
+              <p className="text-sm font-bold">{holding.unitsOwned.toFixed(3)} units</p>
             </div>
             <div className="text-right">
               <p className="text-xs text-white/40">Value</p>
-              <p className="text-sm font-bold">{formatHype(holding.units * trend.price)} HYPE</p>
+              <p className="text-sm font-bold">{formatHype(holding.value)} HYPE</p>
             </div>
           </div>
         )}
@@ -114,7 +123,7 @@ export default function TrendDetail() {
 
         <section className="mb-8 flex items-center gap-6">
           <div>
-            <p className="text-lg font-extrabold">{trend.investorIds.length}</p>
+            <p className="text-lg font-extrabold">{trend.investorCount}</p>
             <p className="text-xs text-white/40">Investors</p>
           </div>
           <div>
@@ -130,14 +139,14 @@ export default function TrendDetail() {
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md px-4 pb-6 safe-bottom">
           <div className="glass-strong flex gap-3 rounded-full p-2">
             <button
-              onClick={() => setSheetMode('sell')}
+              onClick={() => setSheet('sell')}
               disabled={!holding}
               className="tap-scale flex-1 rounded-full border border-white/15 py-3 text-sm font-bold disabled:opacity-30"
             >
               Sell
             </button>
             <button
-              onClick={() => setSheetMode('invest')}
+              onClick={() => setSheet('invest')}
               className="tap-scale flex-1 rounded-full bg-white py-3 text-sm font-bold text-black"
             >
               Invest
@@ -147,9 +156,15 @@ export default function TrendDetail() {
       </div>
 
       <InvestSheet
-        trend={sheetMode ? trend : null}
-        mode={sheetMode ?? 'invest'}
-        onClose={() => setSheetMode(null)}
+        trend={sheet === 'invest' ? trend : null}
+        onClose={() => setSheet(null)}
+        onInvested={refreshAfterTrade}
+      />
+      <SellSheet
+        trend={sheet === 'sell' && holding ? { id: trend.id, name: trend.name, image: trend.image, price: trend.price } : null}
+        unitsOwned={holding?.unitsOwned ?? 0}
+        onClose={() => setSheet(null)}
+        onSold={refreshAfterTrade}
       />
     </div>
   );

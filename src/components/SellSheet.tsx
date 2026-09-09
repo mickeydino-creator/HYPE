@@ -2,43 +2,44 @@ import { useEffect, useState } from 'react';
 import type { Trend } from '../types';
 import { formatHype } from '../lib/format';
 import { useAuth } from '../lib/auth';
-import { investInTrend } from '../lib/hooks';
+import { sellUnits } from '../lib/hooks';
 import { ApiClientError } from '../lib/api';
 
-interface Props {
-  trend: Trend | null;
-  onClose: () => void;
-  onInvested?: (trend: Trend) => void;
+export interface SellTarget {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
 }
 
-const QUICK_AMOUNTS = [10, 25, 50, 100];
+interface Props {
+  trend: SellTarget | null;
+  unitsOwned: number;
+  onClose: () => void;
+  onSold?: (trend: Trend) => void;
+}
 
-export default function InvestSheet({ trend, onClose, onInvested }: Props) {
-  const { user, refresh } = useAuth();
-  const [amount, setAmount] = useState('');
+export default function SellSheet({ trend, unitsOwned, onClose, onSold }: Props) {
+  const { refresh } = useAuth();
+  const [units, setUnits] = useState('0');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    setAmount('');
+    setUnits('0');
     setError(null);
     setSuccess(false);
     setBusy(false);
   }, [trend]);
 
-  if (!trend || !user) return null;
+  if (!trend) return null;
 
-  const numeric = Number(amount) || 0;
-  const units = trend.price > 0 ? numeric / trend.price : 0;
+  const numeric = Number(units) || 0;
+  const estValue = numeric * trend.price;
 
-  function handleQuick(v: number) {
-    setAmount(String(v));
-    setError(null);
-  }
-
-  function handleMax() {
-    setAmount(user!.balance.toFixed(2));
+  function setFraction(fraction: number) {
+    setUnits((unitsOwned * fraction).toFixed(6).replace(/\.?0+$/, '') || '0');
     setError(null);
   }
 
@@ -47,9 +48,9 @@ export default function InvestSheet({ trend, onClose, onInvested }: Props) {
     setBusy(true);
     setError(null);
     try {
-      const res = await investInTrend(trend.id, numeric);
+      const res = await sellUnits(trend.id, numeric);
       await refresh();
-      onInvested?.(res.trend);
+      onSold?.(res.trend);
       setSuccess(true);
       setTimeout(() => onClose(), 900);
     } catch (err) {
@@ -70,10 +71,8 @@ export default function InvestSheet({ trend, onClose, onInvested }: Props) {
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-up/15 text-3xl">
               ✓
             </div>
-            <p className="text-lg font-bold">Invested!</p>
-            <p className="text-sm text-white/50">
-              {formatHype(numeric)} HYPE into {trend.name}
-            </p>
+            <p className="text-lg font-bold">Sold!</p>
+            <p className="text-sm text-white/50">{formatHype(estValue)} HYPE cashed out</p>
           </div>
         ) : (
           <>
@@ -81,49 +80,57 @@ export default function InvestSheet({ trend, onClose, onInvested }: Props) {
               <img src={trend.image} alt={trend.name} className="h-12 w-12 rounded-xl object-cover" />
               <div>
                 <h3 className="text-base font-bold">{trend.name}</h3>
-                <p className="text-xs text-white/45">{formatHype(trend.price)} HYPE · Invest</p>
+                <p className="text-xs text-white/45">{formatHype(trend.price)} HYPE · Sell</p>
               </div>
             </div>
 
             <div className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
               <div className="flex items-center justify-between text-xs text-white/40">
-                <span>You pay</span>
-                <span>Balance: {formatHype(user.balance)}</span>
+                <span>Your holdings</span>
+                <span>You own {unitsOwned.toFixed(3)} units</span>
               </div>
-              <div className="mt-1 flex items-center gap-2">
+              <p className="mb-1 mt-2 text-xs font-medium text-white/40">Units to sell</p>
+              <div className="flex items-center gap-2">
                 <input
                   autoFocus
                   inputMode="decimal"
-                  value={amount}
+                  value={units}
                   onChange={(e) => {
-                    setAmount(e.target.value.replace(/[^0-9.]/g, ''));
+                    setUnits(e.target.value.replace(/[^0-9.]/g, ''));
                     setError(null);
                   }}
-                  placeholder="0.00"
+                  placeholder="0"
                   className="w-full bg-transparent text-3xl font-extrabold tracking-tight outline-none placeholder:text-white/20"
                 />
-                <span className="text-sm font-semibold text-white/40">HYPE</span>
+                <span className="text-sm font-semibold text-white/40">units</span>
               </div>
-              <p className="mt-1 text-xs text-white/35">
-                ≈ {units > 0 ? units.toFixed(3) : '0'} units at {formatHype(trend.price)} HYPE
-              </p>
+              <p className="mt-1 text-xs text-white/35">≈ {formatHype(estValue)} HYPE at {formatHype(trend.price)} HYPE</p>
             </div>
 
             <div className="mb-5 flex items-center gap-2">
-              {QUICK_AMOUNTS.map((v) => (
-                <button
-                  key={v}
-                  onClick={() => handleQuick(v)}
-                  className="tap-scale flex-1 rounded-full border border-white/10 bg-white/5 py-2 text-xs font-semibold text-white/70"
-                >
-                  {v}
-                </button>
-              ))}
               <button
-                onClick={handleMax}
+                onClick={() => setFraction(0.25)}
                 className="tap-scale flex-1 rounded-full border border-white/10 bg-white/5 py-2 text-xs font-semibold text-white/70"
               >
-                Max
+                ¼
+              </button>
+              <button
+                onClick={() => setFraction(0.5)}
+                className="tap-scale flex-1 rounded-full border border-white/10 bg-white/5 py-2 text-xs font-semibold text-white/70"
+              >
+                ½
+              </button>
+              <button
+                onClick={() => setFraction(0.75)}
+                className="tap-scale flex-1 rounded-full border border-white/10 bg-white/5 py-2 text-xs font-semibold text-white/70"
+              >
+                ¾
+              </button>
+              <button
+                onClick={() => setFraction(1)}
+                className="tap-scale flex-1 rounded-full border border-white/10 bg-white/5 py-2 text-xs font-semibold text-white/70"
+              >
+                Sell All
               </button>
             </div>
 
@@ -131,10 +138,10 @@ export default function InvestSheet({ trend, onClose, onInvested }: Props) {
 
             <button
               onClick={handleSubmit}
-              disabled={numeric <= 0 || busy}
+              disabled={numeric <= 0 || numeric > unitsOwned + 1e-9 || busy}
               className="tap-scale w-full rounded-full bg-white py-3.5 text-sm font-bold text-black disabled:opacity-30"
             >
-              {busy ? 'Investing…' : `Invest ${amount ? formatHype(numeric) : ''} HYPE`}
+              {busy ? 'Selling…' : `Sell ${numeric > 0 ? numeric.toFixed(3) : ''} units`}
             </button>
           </>
         )}

@@ -2,3 +2,12 @@ node_modules
 dist
 .DS_Store
 *.local
+
+# server
+server/node_modules
+server/dist
+server/.env
+server/prisma/dev.db
+server/prisma/dev.db-journal
+server/uploads/*
+!server/uploads/.gitkeep

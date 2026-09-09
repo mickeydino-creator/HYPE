@@ -1,48 +1,21 @@
 import { useMemo, useState } from 'react';
 import clsx from 'clsx';
-import { useStore } from '../lib/store';
+import { useCategories, useDebouncedValue, useTrendsFeed } from '../lib/hooks';
 import TrendCard from '../components/TrendCard';
 import InvestSheet from '../components/InvestSheet';
-import type { Category, Trend } from '../types';
+import type { Trend } from '../types';
 import { formatHype } from '../lib/format';
 
-const CATEGORIES: (Category | 'All')[] = [
-  'All',
-  'Tech',
-  'Fashion',
-  'Music',
-  'Gaming',
-  'Lifestyle',
-  'Food',
-  'Sports',
-  'Art',
-  'Finance-Meme',
-  'Other',
-];
-
-function changeOf(trend: Trend) {
-  const first = trend.history[0]?.p ?? trend.price;
-  return first > 0 ? ((trend.price - first) / first) * 100 : 0;
-}
-
 export default function Discover() {
-  const { trendsFeed } = useStore();
-  const [category, setCategory] = useState<Category | 'All'>('All');
+  const [category, setCategory] = useState<string>('All');
   const [query, setQuery] = useState('');
+  const debouncedQuery = useDebouncedValue(query, 300);
   const [active, setActive] = useState<Trend | null>(null);
 
-  const filtered = useMemo(() => {
-    return trendsFeed.filter((t) => {
-      if (category !== 'All' && t.category !== category) return false;
-      if (query && !t.name.toLowerCase().includes(query.toLowerCase())) return false;
-      return true;
-    });
-  }, [trendsFeed, category, query]);
-
-  const topMovers = useMemo(
-    () => [...trendsFeed].sort((a, b) => changeOf(b) - changeOf(a)).slice(0, 5),
-    [trendsFeed]
-  );
+  const categories = useCategories();
+  const { data: filtered, loading } = useTrendsFeed({ category, q: debouncedQuery });
+  const { data: trending } = useTrendsFeed({ sort: 'trending' });
+  const topMovers = useMemo(() => (trending ?? []).slice(0, 5), [trending]);
 
   return (
     <div className="mx-auto max-w-md px-4 pb-28 pt-4 safe-top">
@@ -60,8 +33,7 @@ export default function Discover() {
         <h2 className="mb-3 text-sm font-bold text-white/70">Trending now</h2>
         <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
           {topMovers.map((t) => {
-            const change = changeOf(t);
-            const positive = change >= 0;
+            const positive = t.change24h >= 0;
             return (
               <button
                 key={t.id}
@@ -76,7 +48,7 @@ export default function Discover() {
                   <p className="truncate text-xs font-bold">{t.name}</p>
                   <p className={clsx('text-[11px] font-semibold', positive ? 'text-accent-up' : 'text-accent-down')}>
                     {formatHype(t.price)} · {positive ? '+' : ''}
-                    {change.toFixed(1)}%
+                    {t.change24h.toFixed(1)}%
                   </p>
                 </div>
               </button>
@@ -87,7 +59,7 @@ export default function Discover() {
 
       <section className="mb-4">
         <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
-          {CATEGORIES.map((c) => (
+          {['All', ...categories].map((c) => (
             <button
               key={c}
               onClick={() => setCategory(c)}
@@ -105,15 +77,16 @@ export default function Discover() {
       </section>
 
       <div className="flex flex-col gap-5">
-        {filtered.length === 0 && (
+        {loading && <p className="py-10 text-center text-sm text-white/40">Loading…</p>}
+        {!loading && filtered?.length === 0 && (
           <p className="py-10 text-center text-sm text-white/40">No trends found.</p>
         )}
-        {filtered.map((trend) => (
+        {filtered?.map((trend) => (
           <TrendCard key={trend.id} trend={trend} onInvest={setActive} />
         ))}
       </div>
 
-      <InvestSheet trend={active} mode="invest" onClose={() => setActive(null)} />
+      <InvestSheet trend={active} onClose={() => setActive(null)} />
     </div>
   );
 }
