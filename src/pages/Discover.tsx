@@ -1,0 +1,119 @@
+import { useMemo, useState } from 'react';
+import clsx from 'clsx';
+import { useStore } from '../lib/store';
+import TrendCard from '../components/TrendCard';
+import InvestSheet from '../components/InvestSheet';
+import type { Category, Trend } from '../types';
+import { formatHype } from '../lib/format';
+
+const CATEGORIES: (Category | 'All')[] = [
+  'All',
+  'Tech',
+  'Fashion',
+  'Music',
+  'Gaming',
+  'Lifestyle',
+  'Food',
+  'Sports',
+  'Art',
+  'Finance-Meme',
+  'Other',
+];
+
+function changeOf(trend: Trend) {
+  const first = trend.history[0]?.p ?? trend.price;
+  return first > 0 ? ((trend.price - first) / first) * 100 : 0;
+}
+
+export default function Discover() {
+  const { trendsFeed } = useStore();
+  const [category, setCategory] = useState<Category | 'All'>('All');
+  const [query, setQuery] = useState('');
+  const [active, setActive] = useState<Trend | null>(null);
+
+  const filtered = useMemo(() => {
+    return trendsFeed.filter((t) => {
+      if (category !== 'All' && t.category !== category) return false;
+      if (query && !t.name.toLowerCase().includes(query.toLowerCase())) return false;
+      return true;
+    });
+  }, [trendsFeed, category, query]);
+
+  const topMovers = useMemo(
+    () => [...trendsFeed].sort((a, b) => changeOf(b) - changeOf(a)).slice(0, 5),
+    [trendsFeed]
+  );
+
+  return (
+    <div className="mx-auto max-w-md px-4 pb-28 pt-4 safe-top">
+      <header className="mb-5">
+        <h1 className="mb-4 text-2xl font-extrabold tracking-tight">Discover</h1>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search trends"
+          className="w-full rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-sm outline-none placeholder:text-white/30"
+        />
+      </header>
+
+      <section className="mb-6">
+        <h2 className="mb-3 text-sm font-bold text-white/70">Trending now</h2>
+        <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
+          {topMovers.map((t) => {
+            const change = changeOf(t);
+            const positive = change >= 0;
+            return (
+              <button
+                key={t.id}
+                onClick={() => setActive(t)}
+                className="tap-scale relative w-40 shrink-0 overflow-hidden rounded-2xl border border-base-border bg-base-card text-left"
+              >
+                <div className="relative h-24 w-full">
+                  <img src={t.image} alt={t.name} className="h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
+                </div>
+                <div className="p-2.5">
+                  <p className="truncate text-xs font-bold">{t.name}</p>
+                  <p className={clsx('text-[11px] font-semibold', positive ? 'text-accent-up' : 'text-accent-down')}>
+                    {formatHype(t.price)} · {positive ? '+' : ''}
+                    {change.toFixed(1)}%
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="mb-4">
+        <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
+          {CATEGORIES.map((c) => (
+            <button
+              key={c}
+              onClick={() => setCategory(c)}
+              className={clsx(
+                'tap-scale shrink-0 rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors',
+                category === c
+                  ? 'border-white bg-white text-black'
+                  : 'border-white/10 bg-white/[0.03] text-white/60'
+              )}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <div className="flex flex-col gap-5">
+        {filtered.length === 0 && (
+          <p className="py-10 text-center text-sm text-white/40">No trends found.</p>
+        )}
+        {filtered.map((trend) => (
+          <TrendCard key={trend.id} trend={trend} onInvest={setActive} />
+        ))}
+      </div>
+
+      <InvestSheet trend={active} mode="invest" onClose={() => setActive(null)} />
+    </div>
+  );
+}
