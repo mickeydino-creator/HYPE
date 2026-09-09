@@ -7,6 +7,7 @@ import { Server } from 'socket.io';
 import { prisma } from './db.js';
 import { env } from './lib/env.js';
 import { ApiError } from './lib/errors.js';
+import { ensureCategories } from './lib/categories.js';
 import { authRouter } from './routes/auth.js';
 import { trendsRouter } from './routes/trends.js';
 import { usersRouter } from './routes/users.js';
@@ -107,6 +108,10 @@ setInterval(async () => {
   }
 }, 5000);
 
-httpServer.listen(env.port, () => {
-  console.log(`HYPE API listening on http://localhost:${env.port}`);
-});
+ensureCategories()
+  .catch((err) => console.error('Failed to ensure default categories', err))
+  .finally(() => {
+    httpServer.listen(env.port, () => {
+      console.log(`HYPE API listening on http://localhost:${env.port}`);
+    });
+  });

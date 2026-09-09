@@ -1,8 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { prisma } from './db.js';
 import { generateAvatar, generateCover } from './lib/cover.js';
-
-const CATEGORIES = ['Tech', 'Fashion', 'Music', 'Gaming', 'Lifestyle', 'Food', 'Sports', 'Art', 'Finance-Meme', 'Other'];
+import { ensureCategories } from './lib/categories.js';
 
 const DEMO_USERS = [
   { username: 'nova', email: 'nova@hype.demo', displayName: 'Nova Reyes', bio: 'Spotting trends before they blow up ✨' },
@@ -25,9 +24,7 @@ const DEMO_TRENDS: { name: string; description: string; category: string; start:
 
 async function main() {
   console.log('Seeding categories...');
-  for (const name of CATEGORIES) {
-    await prisma.category.upsert({ where: { name }, update: {}, create: { name } });
-  }
+  await ensureCategories();
 
   console.log('Seeding admin account...');
   const adminPassword = await bcrypt.hash('admin12345', 10);
