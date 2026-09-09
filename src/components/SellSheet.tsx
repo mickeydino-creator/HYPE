@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import type { Trend } from '../types';
 import { formatHype } from '../lib/format';
 import { useAuth } from '../lib/auth';
@@ -105,6 +105,32 @@ export default function SellSheet({ trend, unitsOwned, onClose, onSold }: Props)
                 <span className="text-sm font-semibold text-white/40">units</span>
               </div>
               <p className="mt-1 text-xs text-white/35">≈ {formatHype(estValue)} HYPE at {formatHype(trend.price)} HYPE</p>
+            </div>
+
+            <div className="mb-5">
+              <input
+                type="range"
+                min={0}
+                max={unitsOwned}
+                step={unitsOwned > 0 ? Math.max(unitsOwned / 200, 0.000001) : 1}
+                value={Math.min(numeric, unitsOwned)}
+                onChange={(e) => {
+                  setUnits(Number(e.target.value).toFixed(6).replace(/\.?0+$/, '') || '0');
+                  setError(null);
+                }}
+                disabled={unitsOwned <= 0}
+                className="trade-slider"
+                style={
+                  {
+                    '--fill-color': '#ff5c5c',
+                    '--fill': `${unitsOwned > 0 ? (Math.min(numeric, unitsOwned) / unitsOwned) * 100 : 0}%`,
+                  } as CSSProperties
+                }
+              />
+              <div className="mt-1 flex justify-between text-[10px] text-white/30">
+                <span>0</span>
+                <span>{unitsOwned.toFixed(3)} units</span>
+              </div>
             </div>
 
             <div className="mb-5 flex items-center gap-2">

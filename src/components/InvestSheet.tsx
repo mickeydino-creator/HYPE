@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import type { Trend } from '../types';
 import { formatHype } from '../lib/format';
 import { useAuth } from '../lib/auth';
@@ -107,6 +107,27 @@ export default function InvestSheet({ trend, onClose, onInvested }: Props) {
               <p className="mt-1 text-xs text-white/35">
                 ≈ {units > 0 ? units.toFixed(3) : '0'} units at {formatHype(trend.price)} HYPE
               </p>
+            </div>
+
+            <div className="mb-5">
+              <input
+                type="range"
+                min={0}
+                max={user.balance}
+                step={user.balance > 0 ? Math.max(user.balance / 200, 0.01) : 1}
+                value={Math.min(numeric, user.balance)}
+                onChange={(e) => {
+                  setAmount(Number(e.target.value).toFixed(2));
+                  setError(null);
+                }}
+                disabled={user.balance <= 0}
+                className="trade-slider"
+                style={{ '--fill': `${user.balance > 0 ? (Math.min(numeric, user.balance) / user.balance) * 100 : 0}%` } as CSSProperties}
+              />
+              <div className="mt-1 flex justify-between text-[10px] text-white/30">
+                <span>0</span>
+                <span>{formatHype(user.balance)} HYPE</span>
+              </div>
             </div>
 
             <div className="mb-5 flex items-center gap-2">
