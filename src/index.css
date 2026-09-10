@@ -11,8 +11,8 @@ html, body, #root {
 }
 
 body {
-  background: #000;
-  color: #f5f5f5;
+  background: #F6F7FB;
+  color: #14151F;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overscroll-behavior-y: none;
 }
@@ -31,33 +31,29 @@ body {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(20, 21, 31, 0.06);
 }
 
 .glass-strong {
-  background: rgba(18, 18, 18, 0.72);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(20, 21, 31, 0.06);
 }
 
 .tap-scale {
-  transition: transform 0.15s ease;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .tap-scale:active {
   transform: scale(0.96);
 }
 
 .bg-noise {
-  background-image: radial-gradient(circle at 20% 0%, rgba(255,255,255,0.06), transparent 40%),
-    radial-gradient(circle at 90% 10%, rgba(255,255,255,0.04), transparent 35%);
-}
-
-.gradient-border {
-  position: relative;
+  background-image: radial-gradient(circle at 15% -5%, rgba(59, 108, 255, 0.07), transparent 40%),
+    radial-gradient(circle at 100% 0%, rgba(255, 174, 84, 0.06), transparent 35%);
 }
 
 .safe-top {
@@ -77,10 +73,10 @@ body {
   border-radius: 999px;
   background: linear-gradient(
     to right,
-    var(--fill-color, #fff) 0%,
-    var(--fill-color, #fff) var(--fill, 0%),
-    rgba(255, 255, 255, 0.1) var(--fill, 0%),
-    rgba(255, 255, 255, 0.1) 100%
+    var(--fill-color, #3B6CFF) 0%,
+    var(--fill-color, #3B6CFF) var(--fill, 0%),
+    #EEF0F5 var(--fill, 0%),
+    #EEF0F5 100%
   );
   outline: none;
   cursor: pointer;
@@ -89,23 +85,23 @@ body {
 .trade-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid #0d0d0d;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  border: 3px solid var(--fill-color, #3B6CFF);
+  box-shadow: 0 2px 8px rgba(20, 21, 31, 0.18);
   cursor: pointer;
-  margin-top: -7px;
+  margin-top: -8px;
 }
 
 .trade-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid #0d0d0d;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  border: 3px solid var(--fill-color, #3B6CFF);
+  box-shadow: 0 2px 8px rgba(20, 21, 31, 0.18);
   cursor: pointer;
 }
 
@@ -116,6 +112,6 @@ body {
 }
 
 .trade-slider:disabled {
-  opacity: 0.35;
+  opacity: 0.4;
   cursor: not-allowed;
 }

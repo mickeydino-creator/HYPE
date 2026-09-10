@@ -16,27 +16,27 @@ export default function Portfolio() {
   return (
     <div className="mx-auto max-w-md px-4 pb-28 pt-4 safe-top">
       <header className="mb-6">
-        <h1 className="text-2xl font-extrabold tracking-tight">Portfolio</h1>
-        <p className="text-sm text-white/45">Your virtual HYPE, at a glance.</p>
+        <h1 className="text-2xl font-extrabold tracking-tight text-ink-900">Portfolio</h1>
+        <p className="text-sm text-ink-400">Your virtual HYPE, at a glance.</p>
       </header>
 
-      {loading && !summary && <p className="py-10 text-center text-sm text-white/40">Loading…</p>}
+      {loading && !summary && <p className="py-10 text-center text-sm text-ink-400">Loading…</p>}
 
       {summary && (
-        <div className="mb-6 rounded-xl2 border border-base-border bg-gradient-to-br from-white/[0.06] to-transparent p-5">
-          <p className="text-xs font-medium uppercase tracking-wide text-white/40">Net worth</p>
-          <p className="mb-3 text-4xl font-extrabold tracking-tight">{formatHype(summary.netWorth)}</p>
+        <div className="mb-6 rounded-xl2 border border-base-border bg-white p-5 shadow-card">
+          <p className="text-xs font-medium uppercase tracking-wide text-ink-400">Net worth</p>
+          <p className="mb-3 text-4xl font-extrabold tracking-tight text-ink-900">{formatHype(summary.netWorth)}</p>
           <div className="flex items-center gap-4 text-sm">
             <div>
-              <p className="text-white/40">Cash balance</p>
-              <p className="font-semibold">{formatHype(summary.balance)}</p>
+              <p className="text-ink-400">Cash balance</p>
+              <p className="font-semibold text-ink-900">{formatHype(summary.balance)}</p>
             </div>
             <div>
-              <p className="text-white/40">Invested</p>
-              <p className="font-semibold">{formatHype(summary.portfolioValue)}</p>
+              <p className="text-ink-400">Invested</p>
+              <p className="font-semibold text-ink-900">{formatHype(summary.portfolioValue)}</p>
             </div>
             <div>
-              <p className="text-white/40">P/L</p>
+              <p className="text-ink-400">P/L</p>
               <p className={clsx('font-semibold', summary.totalPl >= 0 ? 'text-accent-up' : 'text-accent-down')}>
                 {summary.totalPl >= 0 ? '+' : ''}
                 {formatHype(summary.totalPl)} ({summary.totalPlPct >= 0 ? '+' : ''}
@@ -48,11 +48,11 @@ export default function Portfolio() {
       )}
 
       <section className="mb-8">
-        <h2 className="mb-3 text-sm font-bold text-white/70">Your investments</h2>
+        <h2 className="mb-3 text-sm font-bold text-ink-700">Your investments</h2>
         {summary && summary.positions.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-white/10 py-10 text-center">
-            <p className="text-sm text-white/40">No investments yet.</p>
-            <button onClick={() => navigate('/')} className="mt-2 text-sm font-semibold text-white">
+          <div className="rounded-2xl border border-dashed border-base-border bg-white py-10 text-center">
+            <p className="text-sm text-ink-400">No investments yet.</p>
+            <button onClick={() => navigate('/')} className="mt-2 text-sm font-semibold text-brand">
               Explore trends →
             </button>
           </div>
@@ -61,16 +61,16 @@ export default function Portfolio() {
             {summary?.positions.map((p) => (
               <div
                 key={p.trendId}
-                className="tap-scale flex items-center gap-3 rounded-2xl border border-base-border bg-base-card p-3"
+                className="tap-scale flex items-center gap-3 rounded-2xl border border-base-border bg-white p-3 shadow-card"
                 onClick={() => navigate(`/trend/${p.trendId}`)}
               >
-                <img src={p.trendImage} alt={p.trendName} className="h-14 w-14 rounded-xl object-cover" />
+                <img src={p.trendImage} alt={p.trendName} className="h-14 w-14 rounded-xl bg-base-muted object-cover" />
                 <div className="flex-1">
-                  <p className="text-sm font-bold">{p.trendName}</p>
-                  <p className="text-xs text-white/40">{p.unitsOwned.toFixed(3)} units</p>
+                  <p className="text-sm font-bold text-ink-900">{p.trendName}</p>
+                  <p className="text-xs text-ink-400">{p.unitsOwned.toFixed(3)} units</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-bold">{formatHype(p.value)}</p>
+                  <p className="text-sm font-bold text-ink-900">{formatHype(p.value)}</p>
                   <p className={clsx('text-xs font-semibold', p.pl >= 0 ? 'text-accent-up' : 'text-accent-down')}>
                     {p.pl >= 0 ? '+' : ''}
                     {p.plPct.toFixed(1)}%
@@ -81,7 +81,7 @@ export default function Portfolio() {
                     e.stopPropagation();
                     setSellTarget(p);
                   }}
-                  className="tap-scale rounded-full border border-white/15 px-3 py-1.5 text-xs font-semibold"
+                  className="tap-scale rounded-full border border-base-border bg-base-muted px-3 py-1.5 text-xs font-semibold text-ink-700"
                 >
                   Sell
                 </button>
@@ -92,35 +92,35 @@ export default function Portfolio() {
       </section>
 
       <section>
-        <h2 className="mb-3 text-sm font-bold text-white/70">Recent activity</h2>
+        <h2 className="mb-3 text-sm font-bold text-ink-700">Recent activity</h2>
         {activity.length === 0 ? (
-          <p className="text-sm text-white/40">No activity yet.</p>
+          <p className="text-sm text-ink-400">No activity yet.</p>
         ) : (
           <div className="flex flex-col gap-2">
             {activity.map((a) => (
               <div
                 key={a.id}
-                className="flex items-center justify-between rounded-xl border border-base-border bg-base-card px-3 py-2.5"
+                className="flex items-center justify-between rounded-xl border border-base-border bg-white px-3 py-2.5 shadow-card"
               >
                 <div className="flex items-center gap-2.5">
                   <span
                     className={clsx(
                       'flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold',
-                      a.type === 'BUY' && 'bg-accent-up/15 text-accent-up',
-                      a.type === 'SELL' && 'bg-accent-down/15 text-accent-down',
-                      a.type === 'CREATE' && 'bg-white/10 text-white'
+                      a.type === 'BUY' && 'bg-accent-upSoft text-accent-up',
+                      a.type === 'SELL' && 'bg-accent-downSoft text-accent-down',
+                      a.type === 'CREATE' && 'bg-pastel-blue text-brand'
                     )}
                   >
                     {a.type === 'BUY' ? '↑' : a.type === 'SELL' ? '↓' : '★'}
                   </span>
                   <div>
-                    <p className="text-xs font-semibold">
+                    <p className="text-xs font-semibold text-ink-900">
                       {a.type === 'BUY' ? 'Invested in' : a.type === 'SELL' ? 'Sold' : 'Created'} {a.trendName}
                     </p>
-                    <p className="text-[11px] text-white/35">{timeAgo(a.createdAt)} ago</p>
+                    <p className="text-[11px] text-ink-400">{timeAgo(a.createdAt)} ago</p>
                   </div>
                 </div>
-                {a.type !== 'CREATE' && <p className="text-xs font-bold">{formatHype(a.totalValue)}</p>}
+                {a.type !== 'CREATE' && <p className="text-xs font-bold text-ink-900">{formatHype(a.totalValue)}</p>}
               </div>
             ))}
           </div>

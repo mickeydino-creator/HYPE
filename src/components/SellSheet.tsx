@@ -63,34 +63,34 @@ export default function SellSheet({ trend, unitsOwned, onClose, onSold }: Props)
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center">
-      <div className="absolute inset-0 bg-black/70 animate-fade-in" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-md animate-pop rounded-t-[2rem] border border-white/10 bg-[#0d0d0d] p-5 pb-8 safe-bottom">
-        <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-white/15" />
+      <div className="absolute inset-0 bg-ink-900/35 animate-fade-in" onClick={onClose} />
+      <div className="relative z-10 w-full max-w-md animate-sheet-up rounded-t-[2rem] border border-base-border bg-white p-5 pb-8 shadow-sheet safe-bottom">
+        <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-base-border" />
 
         {success ? (
           <div className="flex flex-col items-center gap-3 py-10">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-up/15 text-3xl">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-upSoft text-3xl">
               ✓
             </div>
-            <p className="text-lg font-bold">Sold!</p>
-            <p className="text-sm text-white/50">{formatHype(estValue)} HYPE cashed out</p>
+            <p className="text-lg font-bold text-ink-900">Sold!</p>
+            <p className="text-sm text-ink-500">{formatHype(estValue)} HYPE cashed out</p>
           </div>
         ) : (
           <>
             <div className="mb-5 flex items-center gap-3">
               <img src={trend.image} alt={trend.name} className="h-12 w-12 rounded-xl object-cover" />
               <div>
-                <h3 className="text-base font-bold">{trend.name}</h3>
-                <p className="text-xs text-white/45">{formatHype(trend.price)} HYPE · Sell</p>
+                <h3 className="text-base font-bold text-ink-900">{trend.name}</h3>
+                <p className="text-xs text-ink-400">{formatHype(trend.price)} HYPE · Sell</p>
               </div>
             </div>
 
-            <div className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <div className="flex items-center justify-between text-xs text-white/40">
+            <div className="mb-4 rounded-2xl border border-base-border bg-base-muted p-4">
+              <div className="flex items-center justify-between text-xs text-ink-400">
                 <span>Your holdings</span>
                 <span>You own {unitsOwned.toFixed(3)} units</span>
               </div>
-              <p className="mb-1 mt-2 text-xs font-medium text-white/40">Units to sell</p>
+              <p className="mb-1 mt-2 text-xs font-medium text-ink-400">Units to sell</p>
               <div className="flex items-center gap-2">
                 <input
                   autoFocus
@@ -101,11 +101,11 @@ export default function SellSheet({ trend, unitsOwned, onClose, onSold }: Props)
                     setError(null);
                   }}
                   placeholder="0"
-                  className="w-full bg-transparent text-3xl font-extrabold tracking-tight outline-none placeholder:text-white/20"
+                  className="w-full bg-transparent text-3xl font-extrabold tracking-tight text-ink-900 outline-none placeholder:text-ink-300"
                 />
-                <span className="text-sm font-semibold text-white/40">units</span>
+                <span className="text-sm font-semibold text-ink-400">units</span>
               </div>
-              <p className="mt-1 text-xs text-white/35">≈ {formatHype(estValue)} HYPE at {formatHype(trend.price)} HYPE</p>
+              <p className="mt-1 text-xs text-ink-400">≈ {formatHype(estValue)} HYPE at {formatHype(trend.price)} HYPE</p>
             </div>
 
             <div className="mb-5">
@@ -123,12 +123,12 @@ export default function SellSheet({ trend, unitsOwned, onClose, onSold }: Props)
                 className="trade-slider"
                 style={
                   {
-                    '--fill-color': '#ff5c5c',
+                    '--fill-color': '#F0483E',
                     '--fill': `${unitsOwned > 0 ? (Math.min(numeric, unitsOwned) / unitsOwned) * 100 : 0}%`,
                   } as CSSProperties
                 }
               />
-              <div className="mt-1 flex justify-between text-[10px] text-white/30">
+              <div className="mt-1 flex justify-between text-[10px] text-ink-400">
                 <span>0</span>
                 <span>{unitsOwned.toFixed(3)} units</span>
               </div>
@@ -137,25 +137,25 @@ export default function SellSheet({ trend, unitsOwned, onClose, onSold }: Props)
             <div className="mb-5 flex items-center gap-2">
               <button
                 onClick={() => setFraction(0.25)}
-                className="tap-scale flex-1 rounded-full border border-white/10 bg-white/5 py-2 text-xs font-semibold text-white/70"
+                className="tap-scale flex-1 rounded-full border border-base-border bg-base-muted py-2 text-xs font-semibold text-ink-700"
               >
                 ¼
               </button>
               <button
                 onClick={() => setFraction(0.5)}
-                className="tap-scale flex-1 rounded-full border border-white/10 bg-white/5 py-2 text-xs font-semibold text-white/70"
+                className="tap-scale flex-1 rounded-full border border-base-border bg-base-muted py-2 text-xs font-semibold text-ink-700"
               >
                 ½
               </button>
               <button
                 onClick={() => setFraction(0.75)}
-                className="tap-scale flex-1 rounded-full border border-white/10 bg-white/5 py-2 text-xs font-semibold text-white/70"
+                className="tap-scale flex-1 rounded-full border border-base-border bg-base-muted py-2 text-xs font-semibold text-ink-700"
               >
                 ¾
               </button>
               <button
                 onClick={() => setFraction(1)}
-                className="tap-scale flex-1 rounded-full border border-white/10 bg-white/5 py-2 text-xs font-semibold text-white/70"
+                className="tap-scale flex-1 rounded-full border border-base-border bg-base-muted py-2 text-xs font-semibold text-ink-700"
               >
                 Sell All
               </button>
@@ -168,7 +168,7 @@ export default function SellSheet({ trend, unitsOwned, onClose, onSold }: Props)
               onConfirm={handleSubmit}
               disabled={numeric <= 0 || numeric > unitsOwned + 1e-9}
               busy={busy}
-              accentColor="#ff5c5c"
+              accentColor="#F0483E"
             />
           </>
         )}

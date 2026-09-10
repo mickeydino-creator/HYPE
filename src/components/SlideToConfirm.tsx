@@ -17,7 +17,7 @@ export default function SlideToConfirm({
   onConfirm,
   disabled = false,
   busy = false,
-  accentColor = '#ffffff',
+  accentColor = '#3B6CFF',
   resetKey,
 }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -72,21 +72,21 @@ export default function SlideToConfirm({
   return (
     <div
       ref={trackRef}
-      className="relative h-14 w-full select-none overflow-hidden rounded-full border border-white/10 bg-white/5"
-      style={{ opacity: disabled ? 0.4 : 1 }}
+      className="relative h-14 w-full select-none overflow-hidden rounded-full border border-base-border bg-base-muted"
+      style={{ opacity: disabled ? 0.45 : 1 }}
     >
       <div
         className="absolute inset-y-0 left-0 rounded-full"
         style={{
           width: `${HANDLE_SIZE + dragX + 8}px`,
           background: accentColor,
-          opacity: 0.16,
-          transition: dragging ? 'none' : 'width 0.25s ease',
+          opacity: 0.14,
+          transition: dragging ? 'none' : 'width 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       />
       <div
-        className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm font-bold"
-        style={{ opacity: Math.max(0, 1 - progress * 1.6), color: 'rgba(255,255,255,0.75)' }}
+        className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm font-bold text-ink-700"
+        style={{ opacity: Math.max(0, 1 - progress * 1.6) }}
       >
         {busy ? 'Processing…' : completed ? 'Done' : label}
       </div>
@@ -95,23 +95,23 @@ export default function SlideToConfirm({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        className="absolute left-1 top-1 flex items-center justify-center rounded-full"
+        className="absolute left-1 top-1 flex items-center justify-center rounded-full shadow-soft"
         style={{
           width: HANDLE_SIZE,
           height: HANDLE_SIZE,
           transform: `translateX(${dragX}px)`,
-          transition: dragging ? 'none' : 'transform 0.25s ease',
+          transition: dragging ? 'none' : 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
           background: accentColor,
           cursor: disabled || busy || completed ? 'default' : 'grab',
           touchAction: 'none',
         }}
       >
         {busy ? (
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-black/30 border-t-black" />
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
         ) : completed ? (
-          <span className="text-base font-bold text-black">✓</span>
+          <span className="text-base font-bold text-white">✓</span>
         ) : (
-          <span className="text-base font-bold text-black">→</span>
+          <span className="text-base font-bold text-white">→</span>
         )}
       </div>
     </div>

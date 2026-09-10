@@ -23,20 +23,20 @@ export function generateCover(seed: string): string {
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 100 75">
     <defs>
-      <radialGradient id="a" cx="20%" cy="15%" r="75%">
-        <stop offset="0%" stop-color="${hslStr(hueA, 85, 55)}" />
-        <stop offset="100%" stop-color="${hslStr(hueA, 85, 55)}" stop-opacity="0" />
+      <radialGradient id="a" cx="20%" cy="15%" r="80%">
+        <stop offset="0%" stop-color="${hslStr(hueA, 90, 82)}" />
+        <stop offset="100%" stop-color="${hslStr(hueA, 90, 82)}" stop-opacity="0" />
       </radialGradient>
-      <radialGradient id="b" cx="70%" cy="65%" r="70%">
-        <stop offset="0%" stop-color="${hslStr(hueB, 90, 60)}" />
-        <stop offset="100%" stop-color="${hslStr(hueB, 90, 60)}" stop-opacity="0" />
+      <radialGradient id="b" cx="75%" cy="70%" r="75%">
+        <stop offset="0%" stop-color="${hslStr(hueB, 92, 78)}" />
+        <stop offset="100%" stop-color="${hslStr(hueB, 92, 78)}" stop-opacity="0" />
       </radialGradient>
-      <radialGradient id="c" cx="35%" cy="75%" r="65%">
-        <stop offset="0%" stop-color="${hslStr(hueC, 80, 45)}" />
-        <stop offset="100%" stop-color="${hslStr(hueC, 80, 45)}" stop-opacity="0" />
+      <radialGradient id="c" cx="35%" cy="85%" r="70%">
+        <stop offset="0%" stop-color="${hslStr(hueC, 85, 75)}" />
+        <stop offset="100%" stop-color="${hslStr(hueC, 85, 75)}" stop-opacity="0" />
       </radialGradient>
     </defs>
-    <rect width="100" height="75" fill="#060606" />
+    <rect width="100" height="75" fill="${hslStr(hueA, 60, 94)}" />
     <rect width="100" height="75" fill="url(#a)" />
     <rect width="100" height="75" fill="url(#b)" />
     <rect width="100" height="75" fill="url(#c)" />

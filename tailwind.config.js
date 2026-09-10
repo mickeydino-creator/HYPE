@@ -6,24 +6,54 @@ export default {
     extend: {
       colors: {
         base: {
-          bg: '#000000',
-          surface: '#0a0a0a',
-          card: '#121212',
-          border: '#232323',
+          bg: '#F6F7FB',
+          surface: '#FFFFFF',
+          card: '#FFFFFF',
+          border: '#EEF0F5',
+          muted: '#F1F3F8',
+        },
+        ink: {
+          900: '#14151F',
+          700: '#3F4354',
+          500: '#6B7086',
+          400: '#9AA0B4',
+          300: '#C2C6D6',
+        },
+        brand: {
+          DEFAULT: '#3B6CFF',
+          50: '#EEF3FF',
+          100: '#DEE8FF',
+          200: '#C1D3FF',
+          600: '#2F58E0',
         },
         accent: {
-          up: '#3ddc84',
-          down: '#ff5c5c',
+          up: '#1FAE5C',
+          upSoft: '#E7F8ED',
+          down: '#F0483E',
+          downSoft: '#FDEBEA',
+        },
+        pastel: {
+          blue: '#EAF1FF',
+          green: '#E9F8EE',
+          pink: '#FEECF3',
+          yellow: '#FFF6E0',
+          purple: '#F2ECFF',
+          peach: '#FFEEE5',
         },
       },
       fontFamily: {
         sans: ['"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
       },
       borderRadius: {
-        xl2: '1.5rem',
+        xl2: '1.75rem',
+        xl3: '2rem',
       },
       boxShadow: {
-        glass: '0 8px 32px 0 rgba(0, 0, 0, 0.45)',
+        soft: '0 1px 2px rgba(20, 21, 31, 0.04), 0 8px 24px -12px rgba(20, 21, 31, 0.10)',
+        card: '0 2px 6px rgba(20, 21, 31, 0.03), 0 12px 28px -16px rgba(20, 21, 31, 0.12)',
+        nav: '0 8px 30px -8px rgba(20, 21, 31, 0.18)',
+        sheet: '0 -12px 40px -12px rgba(20, 21, 31, 0.18)',
+        glow: '0 8px 20px -6px rgba(59, 108, 255, 0.35)',
       },
       backdropBlur: {
         xs: '2px',
@@ -37,10 +67,18 @@ export default {
           '0%': { transform: 'scale(0.94)', opacity: 0 },
           '100%': { transform: 'scale(1)', opacity: 1 },
         },
+        'sheet-up': {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
       },
       animation: {
-        'fade-in': 'fade-in 0.4s ease forwards',
-        'pop': 'pop 0.25s ease forwards',
+        'fade-in': 'fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'pop': 'pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+        'sheet-up': 'sheet-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+      },
+      transitionTimingFunction: {
+        premium: 'cubic-bezier(0.16, 1, 0.3, 1)',
       },
     },
   },

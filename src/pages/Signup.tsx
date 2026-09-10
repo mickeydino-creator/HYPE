@@ -27,9 +27,10 @@ export default function Signup() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 safe-top">
-      <h1 className="mb-1 text-3xl font-extrabold tracking-tight">Join HYPE</h1>
-      <p className="mb-8 text-sm text-white/45">
+    <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center bg-base-bg px-6 safe-top">
+      <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand text-2xl shadow-glow">💠</div>
+      <h1 className="mb-1 text-3xl font-extrabold tracking-tight text-ink-900">Join HYPE</h1>
+      <p className="mb-8 text-sm text-ink-400">
         Get 1,000 virtual HYPE to start backing trends. No real money, ever.
       </p>
 
@@ -39,7 +40,7 @@ export default function Signup() {
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
           autoComplete="username"
-          className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm outline-none placeholder:text-white/30"
+          className="w-full rounded-2xl border border-base-border bg-white px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
         />
         <input
           value={email}
@@ -47,7 +48,7 @@ export default function Signup() {
           type="email"
           placeholder="Email"
           autoComplete="email"
-          className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm outline-none placeholder:text-white/30"
+          className="w-full rounded-2xl border border-base-border bg-white px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
         />
         <input
           value={password}
@@ -55,7 +56,7 @@ export default function Signup() {
           type="password"
           placeholder="Password (min. 8 characters)"
           autoComplete="new-password"
-          className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm outline-none placeholder:text-white/30"
+          className="w-full rounded-2xl border border-base-border bg-white px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
         />
 
         {error && <p className="text-center text-xs font-medium text-accent-down">{error}</p>}
@@ -63,15 +64,15 @@ export default function Signup() {
         <button
           type="submit"
           disabled={busy || !username || !email || password.length < 8}
-          className="tap-scale mt-2 w-full rounded-full bg-white py-3.5 text-sm font-bold text-black disabled:opacity-40"
+          className="tap-scale mt-2 w-full rounded-full bg-brand py-3.5 text-sm font-bold text-white shadow-glow disabled:opacity-40"
         >
           {busy ? 'Creating account…' : 'Create account'}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-white/45">
+      <p className="mt-6 text-center text-sm text-ink-400">
         Already have an account?{' '}
-        <Link to="/login" className="font-semibold text-white">
+        <Link to="/login" className="font-semibold text-brand">
           Log in
         </Link>
       </p>

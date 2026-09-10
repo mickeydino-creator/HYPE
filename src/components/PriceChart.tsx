@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function PriceChart({ data, positive, height = 48, interactive = false }: Props) {
-  const color = positive ? '#3ddc84' : '#ff5c5c';
+  const color = positive ? '#1FAE5C' : '#F0483E';
   const gradientId = `grad-${positive ? 'up' : 'down'}-${interactive ? 'lg' : 'sm'}`;
 
   return (
@@ -28,14 +28,14 @@ export default function PriceChart({ data, positive, height = 48, interactive = 
           {interactive && <YAxis domain={['auto', 'auto']} hide />}
           {interactive && (
             <Tooltip
-              cursor={{ stroke: 'rgba(255,255,255,0.15)', strokeWidth: 1 }}
+              cursor={{ stroke: 'rgba(20,21,31,0.12)', strokeWidth: 1 }}
               content={({ active, payload }) => {
                 if (!active || !payload || !payload.length) return null;
                 const p = payload[0].payload as PricePoint;
                 return (
-                  <div className="glass-strong rounded-xl px-3 py-2 text-xs">
-                    <div className="font-semibold text-white">{p.p.toFixed(2)} HYPE</div>
-                    <div className="text-white/40">{new Date(p.t).toLocaleString()}</div>
+                  <div className="rounded-xl border border-base-border bg-white px-3 py-2 text-xs shadow-card">
+                    <div className="font-semibold text-ink-900">{p.p.toFixed(2)} HYPE</div>
+                    <div className="text-ink-400">{new Date(p.t).toLocaleString()}</div>
                   </div>
                 );
               }}

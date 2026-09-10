@@ -77,8 +77,8 @@ export default function Admin() {
   return (
     <div className="mx-auto max-w-md px-4 pb-28 pt-4 safe-top">
       <header className="mb-5">
-        <h1 className="text-2xl font-extrabold tracking-tight">Admin</h1>
-        <p className="text-sm text-white/45">Platform overview & moderation.</p>
+        <h1 className="text-2xl font-extrabold tracking-tight text-ink-900">Admin</h1>
+        <p className="text-sm text-ink-400">Platform overview & moderation.</p>
       </header>
 
       <div className="no-scrollbar mb-5 flex gap-2 overflow-x-auto">
@@ -88,7 +88,7 @@ export default function Admin() {
             onClick={() => setTab(t)}
             className={clsx(
               'tap-scale shrink-0 rounded-full border px-4 py-1.5 text-xs font-semibold capitalize',
-              tab === t ? 'border-white bg-white text-black' : 'border-white/10 bg-white/[0.03] text-white/60'
+              tab === t ? 'border-brand bg-brand text-white' : 'border-base-border bg-white text-ink-500'
             )}
           >
             {t}
@@ -109,19 +109,19 @@ export default function Admin() {
       {tab === 'users' && (
         <div className="flex flex-col gap-2">
           {users.map((u) => (
-            <div key={u.id} className="flex items-center justify-between rounded-2xl border border-base-border bg-base-card p-3">
+            <div key={u.id} className="flex items-center justify-between rounded-2xl border border-base-border bg-white p-3 shadow-card">
               <div>
-                <p className="text-sm font-bold">
-                  @{u.username} {u.role === 'ADMIN' && <span className="text-[10px] text-white/40">ADMIN</span>}
+                <p className="text-sm font-bold text-ink-900">
+                  @{u.username} {u.role === 'ADMIN' && <span className="text-[10px] text-ink-400">ADMIN</span>}
                 </p>
-                <p className="text-xs text-white/40">{formatHype(u.balance)} HYPE · joined {timeAgo(u.createdAt)} ago</p>
+                <p className="text-xs text-ink-400">{formatHype(u.balance)} HYPE · joined {timeAgo(u.createdAt)} ago</p>
               </div>
               {u.role !== 'ADMIN' && (
                 <button
                   onClick={() => suspend(u.id, u.suspended)}
                   className={clsx(
                     'tap-scale rounded-full border px-3 py-1.5 text-xs font-semibold',
-                    u.suspended ? 'border-accent-up/40 text-accent-up' : 'border-accent-down/40 text-accent-down'
+                    u.suspended ? 'border-accent-up bg-accent-upSoft text-accent-up' : 'border-accent-down bg-accent-downSoft text-accent-down'
                   )}
                 >
                   {u.suspended ? 'Unsuspend' : 'Suspend'}
@@ -135,10 +135,10 @@ export default function Admin() {
       {tab === 'trends' && (
         <div className="flex flex-col gap-2">
           {trends.map((t) => (
-            <div key={t.id} className="flex items-center justify-between rounded-2xl border border-base-border bg-base-card p-3">
+            <div key={t.id} className="flex items-center justify-between rounded-2xl border border-base-border bg-white p-3 shadow-card">
               <div>
-                <p className="text-sm font-bold">{t.name}</p>
-                <p className="text-xs text-white/40">
+                <p className="text-sm font-bold text-ink-900">{t.name}</p>
+                <p className="text-xs text-ink-400">
                   @{t.creatorUsername} · {formatHype(t.price)} HYPE · {t.investorCount} investors
                   {t.removed && ' · removed'}
                 </p>
@@ -146,7 +146,7 @@ export default function Admin() {
               {!t.removed && (
                 <button
                   onClick={() => removeTrend(t.id)}
-                  className="tap-scale rounded-full border border-accent-down/40 px-3 py-1.5 text-xs font-semibold text-accent-down"
+                  className="tap-scale rounded-full border border-accent-down bg-accent-downSoft px-3 py-1.5 text-xs font-semibold text-accent-down"
                 >
                   Delete
                 </button>
@@ -159,14 +159,14 @@ export default function Admin() {
       {tab === 'transactions' && (
         <div className="flex flex-col gap-2">
           {transactions.map((t) => (
-            <div key={t.id} className="flex items-center justify-between rounded-xl border border-base-border bg-base-card px-3 py-2.5">
+            <div key={t.id} className="flex items-center justify-between rounded-xl border border-base-border bg-white px-3 py-2.5 shadow-card">
               <div>
-                <p className="text-xs font-semibold">
+                <p className="text-xs font-semibold text-ink-900">
                   @{t.username} {t.type.toLowerCase()} {t.trendName}
                 </p>
-                <p className="text-[11px] text-white/35">{timeAgo(t.createdAt)} ago</p>
+                <p className="text-[11px] text-ink-400">{timeAgo(t.createdAt)} ago</p>
               </div>
-              <p className="text-xs font-bold">{formatHype(t.totalValue)}</p>
+              <p className="text-xs font-bold text-ink-900">{formatHype(t.totalValue)}</p>
             </div>
           ))}
         </div>
@@ -177,9 +177,9 @@ export default function Admin() {
 
 function StatCard({ label, value, full }: { label: string; value: string | number; full?: boolean }) {
   return (
-    <div className={clsx('rounded-2xl border border-base-border bg-base-card p-4', full && 'col-span-2')}>
-      <p className="text-2xl font-extrabold">{value}</p>
-      <p className="text-xs text-white/40">{label}</p>
+    <div className={clsx('rounded-2xl border border-base-border bg-white p-4 shadow-card', full && 'col-span-2')}>
+      <p className="text-2xl font-extrabold text-ink-900">{value}</p>
+      <p className="text-xs text-ink-400">{label}</p>
     </div>
   );
 }

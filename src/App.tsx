@@ -17,8 +17,8 @@ function ProtectedShell() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black">
-        <p className="text-sm text-white/40">Loading HYPE…</p>
+      <div className="flex min-h-screen items-center justify-center bg-base-bg">
+        <p className="text-sm text-ink-400">Loading HYPE…</p>
       </div>
     );
   }
@@ -28,7 +28,7 @@ function ProtectedShell() {
   const hideNav = location.pathname.startsWith('/trend/');
 
   return (
-    <div className="min-h-screen bg-black bg-noise text-white">
+    <div className="min-h-screen bg-base-bg bg-noise text-ink-900">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Feed />} />
         <Route path="/discover" element={<Discover />} />
@@ -50,8 +50,8 @@ function AuthGate() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black">
-        <p className="text-sm text-white/40">Loading HYPE…</p>
+      <div className="flex min-h-screen items-center justify-center bg-base-bg">
+        <p className="text-sm text-ink-400">Loading HYPE…</p>
       </div>
     );
   }
