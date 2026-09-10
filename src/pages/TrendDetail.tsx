@@ -55,7 +55,7 @@ export default function TrendDetail() {
         <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-4 safe-top">
           <button
             onClick={() => navigate(-1)}
-            className="tap-scale flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-ink-900 shadow-soft backdrop-blur-sm"
+            className="tap-scale flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#14151F] shadow-soft backdrop-blur-sm"
           >
             ←
           </button>
@@ -92,7 +92,7 @@ export default function TrendDetail() {
                   'tap-scale rounded-full border px-3 py-1 text-xs font-semibold',
                   range.label === r.label
                     ? 'border-brand bg-brand text-white'
-                    : 'border-base-border bg-white text-ink-500'
+                    : 'border-base-border bg-base-surface text-ink-500'
                 )}
               >
                 {r.label}
@@ -101,19 +101,19 @@ export default function TrendDetail() {
           </div>
         </div>
 
-        <div className="mb-6 rounded-xl2 border border-base-border bg-white p-3 shadow-card">
+        <div className="mb-6 rounded-xl2 border border-base-border bg-base-surface p-3 shadow-card">
           <PriceChart data={chartData} positive={positive} height={180} interactive />
         </div>
 
         {holding && (
           <div className="mb-6 flex items-center justify-between rounded-2xl border border-base-border bg-pastel-blue px-4 py-3">
             <div>
-              <p className="text-xs text-ink-500">Your position</p>
-              <p className="text-sm font-bold text-ink-900">{holding.unitsOwned.toFixed(3)} units</p>
+              <p className="text-xs text-[#3F4354]">Your position</p>
+              <p className="text-sm font-bold text-[#14151F]">{holding.unitsOwned.toFixed(3)} units</p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-ink-500">Value</p>
-              <p className="text-sm font-bold text-ink-900">{formatHype(holding.value)} HYPE</p>
+              <p className="text-xs text-[#3F4354]">Value</p>
+              <p className="text-sm font-bold text-[#14151F]">{formatHype(holding.value)} HYPE</p>
             </div>
           </div>
         )}
@@ -123,7 +123,7 @@ export default function TrendDetail() {
           <p className="text-sm leading-relaxed text-ink-500">{trend.description}</p>
         </section>
 
-        <section className="mb-8 flex items-center gap-6 rounded-2xl border border-base-border bg-white p-4 shadow-card">
+        <section className="mb-8 flex items-center gap-6 rounded-2xl border border-base-border bg-base-surface p-4 shadow-card">
           <div>
             <p className="text-lg font-extrabold text-ink-900">{trend.investorCount}</p>
             <p className="text-xs text-ink-400">Investors</p>

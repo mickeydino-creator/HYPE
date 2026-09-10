@@ -88,7 +88,7 @@ export default function Admin() {
             onClick={() => setTab(t)}
             className={clsx(
               'tap-scale shrink-0 rounded-full border px-4 py-1.5 text-xs font-semibold capitalize',
-              tab === t ? 'border-brand bg-brand text-white' : 'border-base-border bg-white text-ink-500'
+              tab === t ? 'border-brand bg-brand text-white' : 'border-base-border bg-base-surface text-ink-500'
             )}
           >
             {t}
@@ -109,7 +109,7 @@ export default function Admin() {
       {tab === 'users' && (
         <div className="flex flex-col gap-2">
           {users.map((u) => (
-            <div key={u.id} className="flex items-center justify-between rounded-2xl border border-base-border bg-white p-3 shadow-card">
+            <div key={u.id} className="flex items-center justify-between rounded-2xl border border-base-border bg-base-surface p-3 shadow-card">
               <div>
                 <p className="text-sm font-bold text-ink-900">
                   @{u.username} {u.role === 'ADMIN' && <span className="text-[10px] text-ink-400">ADMIN</span>}
@@ -135,7 +135,7 @@ export default function Admin() {
       {tab === 'trends' && (
         <div className="flex flex-col gap-2">
           {trends.map((t) => (
-            <div key={t.id} className="flex items-center justify-between rounded-2xl border border-base-border bg-white p-3 shadow-card">
+            <div key={t.id} className="flex items-center justify-between rounded-2xl border border-base-border bg-base-surface p-3 shadow-card">
               <div>
                 <p className="text-sm font-bold text-ink-900">{t.name}</p>
                 <p className="text-xs text-ink-400">
@@ -159,7 +159,7 @@ export default function Admin() {
       {tab === 'transactions' && (
         <div className="flex flex-col gap-2">
           {transactions.map((t) => (
-            <div key={t.id} className="flex items-center justify-between rounded-xl border border-base-border bg-white px-3 py-2.5 shadow-card">
+            <div key={t.id} className="flex items-center justify-between rounded-xl border border-base-border bg-base-surface px-3 py-2.5 shadow-card">
               <div>
                 <p className="text-xs font-semibold text-ink-900">
                   @{t.username} {t.type.toLowerCase()} {t.trendName}
@@ -177,7 +177,7 @@ export default function Admin() {
 
 function StatCard({ label, value, full }: { label: string; value: string | number; full?: boolean }) {
   return (
-    <div className={clsx('rounded-2xl border border-base-border bg-white p-4 shadow-card', full && 'col-span-2')}>
+    <div className={clsx('rounded-2xl border border-base-border bg-base-surface p-4 shadow-card', full && 'col-span-2')}>
       <p className="text-2xl font-extrabold text-ink-900">{value}</p>
       <p className="text-xs text-ink-400">{label}</p>
     </div>

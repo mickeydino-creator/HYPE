@@ -5,26 +5,27 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Theme-aware tokens: each resolves to an "R G B" CSS variable (see
+        // index.css :root / html.dark) via Tailwind's alpha-value pattern,
+        // so bg-base-bg, text-ink-900, bg-base-bg/50 etc. all flip
+        // automatically when the `dark` class toggles on <html>.
         base: {
-          bg: '#F6F7FB',
-          surface: '#FFFFFF',
-          card: '#FFFFFF',
-          border: '#EEF0F5',
-          muted: '#F1F3F8',
+          bg: 'rgb(var(--color-bg) / <alpha-value>)',
+          surface: 'rgb(var(--color-surface) / <alpha-value>)',
+          card: 'rgb(var(--color-surface) / <alpha-value>)',
+          border: 'rgb(var(--color-border) / <alpha-value>)',
+          muted: 'rgb(var(--color-muted) / <alpha-value>)',
         },
         ink: {
-          900: '#14151F',
-          700: '#3F4354',
-          500: '#6B7086',
-          400: '#9AA0B4',
-          300: '#C2C6D6',
+          900: 'rgb(var(--color-ink-900) / <alpha-value>)',
+          700: 'rgb(var(--color-ink-700) / <alpha-value>)',
+          500: 'rgb(var(--color-ink-500) / <alpha-value>)',
+          400: 'rgb(var(--color-ink-400) / <alpha-value>)',
+          300: 'rgb(var(--color-ink-300) / <alpha-value>)',
         },
         brand: {
-          DEFAULT: '#111114',
-          50: '#F4F4F5',
-          100: '#E4E4E7',
-          200: '#C7C7CC',
-          600: '#000000',
+          DEFAULT: 'rgb(var(--color-brand) / <alpha-value>)',
+          600: 'rgb(var(--color-brand-600) / <alpha-value>)',
         },
         accent: {
           up: '#1FAE5C',
@@ -32,6 +33,9 @@ export default {
           down: '#F0483E',
           downSoft: '#FDEBEA',
         },
+        // Small colorful accent chips (category tags, balance pill) stay a
+        // constant light tint in both themes — always paired with a fixed
+        // dark text color, never the theme-flipping ink/brand tokens.
         pastel: {
           blue: '#EAF1FF',
           green: '#E9F8EE',

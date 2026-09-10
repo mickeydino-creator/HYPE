@@ -88,7 +88,7 @@ export default function Create() {
       </label>
       <button
         onClick={() => fileRef.current?.click()}
-        className="tap-scale mb-5 flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl2 border-2 border-dashed border-base-border bg-white"
+        className="tap-scale mb-5 flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl2 border-2 border-dashed border-base-border bg-base-surface"
       >
         {imagePreview ? (
           <img src={imagePreview} alt="Preview" className="h-full w-full object-cover" />
@@ -109,7 +109,7 @@ export default function Create() {
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="e.g. AI Smart Glasses"
-        className="mb-4 w-full rounded-2xl border border-base-border bg-white px-4 py-3 text-sm text-ink-900 outline-none placeholder:text-ink-300"
+        className="mb-4 w-full rounded-2xl border border-base-border bg-base-surface px-4 py-3 text-sm text-ink-900 outline-none placeholder:text-ink-300"
       />
 
       <label className="mb-1 block text-xs font-semibold text-ink-500">
@@ -121,7 +121,7 @@ export default function Create() {
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Why is this about to take off?"
         rows={3}
-        className="mb-4 w-full resize-none rounded-2xl border border-base-border bg-white px-4 py-3 text-sm text-ink-900 outline-none placeholder:text-ink-300"
+        className="mb-4 w-full resize-none rounded-2xl border border-base-border bg-base-surface px-4 py-3 text-sm text-ink-900 outline-none placeholder:text-ink-300"
       />
 
       <label className="mb-1 block text-xs font-semibold text-ink-500">
@@ -137,7 +137,7 @@ export default function Create() {
               'tap-scale shrink-0 rounded-full border px-4 py-1.5 text-xs font-semibold',
               pickedCategory === c
                 ? 'border-brand bg-brand text-white'
-                : 'border-base-border bg-white text-ink-500'
+                : 'border-base-border bg-base-surface text-ink-500'
             )}
           >
             {c}
@@ -149,7 +149,7 @@ export default function Create() {
         <StepBadge n={5} />
         Starting HYPE price
       </label>
-      <div className="mb-6 flex items-center gap-2 rounded-2xl border border-base-border bg-white px-4 py-3">
+      <div className="mb-6 flex items-center gap-2 rounded-2xl border border-base-border bg-base-surface px-4 py-3">
         <input
           inputMode="decimal"
           value={startingPrice}
@@ -162,7 +162,7 @@ export default function Create() {
       {(name || imagePreview) && (
         <div className="mb-6">
           <p className="mb-2 text-xs font-semibold text-ink-500">Preview</p>
-          <div className="flex items-center gap-3 rounded-2xl border border-base-border bg-white p-3 shadow-card">
+          <div className="flex items-center gap-3 rounded-2xl border border-base-border bg-base-surface p-3 shadow-card">
             <div className="h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-base-muted">
               {imagePreview && <img src={imagePreview} alt="" className="h-full w-full object-cover" />}
             </div>

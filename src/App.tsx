@@ -1,5 +1,6 @@
 import { Navigate, HashRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './lib/auth';
+import { ThemeProvider } from './lib/theme';
 import BottomNav from './components/BottomNav';
 import Feed from './pages/Feed';
 import Discover from './pages/Discover';
@@ -67,10 +68,12 @@ function AuthGate() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <HashRouter>
-        <AuthGate />
-      </HashRouter>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <HashRouter>
+          <AuthGate />
+        </HashRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

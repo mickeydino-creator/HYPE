@@ -17,7 +17,7 @@ export default function SlideToConfirm({
   onConfirm,
   disabled = false,
   busy = false,
-  accentColor = '#111114',
+  accentColor = 'rgb(var(--color-brand))',
   resetKey,
 }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);

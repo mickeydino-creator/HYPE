@@ -11,7 +11,7 @@ export default function TrendCard({ trend, onInvest }: { trend: Trend; onInvest:
 
   return (
     <article
-      className="animate-fade-in overflow-hidden rounded-xl2 border border-base-border bg-white p-4 tap-scale shadow-card"
+      className="animate-fade-in overflow-hidden rounded-xl2 border border-base-border bg-base-surface p-4 tap-scale shadow-card"
       onClick={() => navigate(`/trend/${trend.id}`)}
     >
       <div className="mb-3 flex items-center justify-between">

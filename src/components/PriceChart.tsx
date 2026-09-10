@@ -33,7 +33,7 @@ export default function PriceChart({ data, positive, height = 48, interactive = 
                 if (!active || !payload || !payload.length) return null;
                 const p = payload[0].payload as PricePoint;
                 return (
-                  <div className="rounded-xl border border-base-border bg-white px-3 py-2 text-xs shadow-card">
+                  <div className="rounded-xl border border-base-border bg-base-surface px-3 py-2 text-xs shadow-card">
                     <div className="font-semibold text-ink-900">{p.p.toFixed(2)} HYPE</div>
                     <div className="text-ink-400">{new Date(p.t).toLocaleString()}</div>
                   </div>

@@ -22,7 +22,7 @@ export default function Discover() {
     <div className="mx-auto max-w-md px-4 pb-28 pt-4 safe-top">
       <header className="mb-5">
         <h1 className="mb-4 text-2xl font-extrabold tracking-tight text-ink-900">Discover</h1>
-        <div className="flex items-center gap-2 rounded-full border border-base-border bg-white px-4 py-3 shadow-card">
+        <div className="flex items-center gap-2 rounded-full border border-base-border bg-base-surface px-4 py-3 shadow-card">
           <span className="text-ink-400">🔍</span>
           <input
             value={query}
@@ -42,7 +42,7 @@ export default function Discover() {
               <button
                 key={t.id}
                 onClick={() => setActive(t)}
-                className="tap-scale relative w-40 shrink-0 overflow-hidden rounded-2xl border border-base-border bg-white text-left shadow-card"
+                className="tap-scale relative w-40 shrink-0 overflow-hidden rounded-2xl border border-base-border bg-base-surface text-left shadow-card"
               >
                 <SmartImage src={t.image} alt={t.name} className="h-24 w-full" />
                 <div className="p-2.5">
@@ -68,7 +68,7 @@ export default function Discover() {
                 'tap-scale shrink-0 rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors',
                 category === c
                   ? 'border-brand bg-brand text-white'
-                  : 'border-base-border bg-white text-ink-500'
+                  : 'border-base-border bg-base-surface text-ink-500'
               )}
             >
               {c}

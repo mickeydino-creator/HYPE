@@ -5,11 +5,13 @@ import { useUserProfile } from '../lib/hooks';
 import { formatHype } from '../lib/format';
 import { ApiClientError } from '../lib/api';
 import SmartImage from '../components/SmartImage';
+import { useTheme } from '../lib/theme';
 
 export default function Profile() {
   const { username: routeUsername } = useParams();
   const { user: me, logout, updateProfile } = useAuth();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const username = routeUsername ?? me?.username;
   const { data, loading } = useUserProfile(username);
@@ -76,7 +78,7 @@ export default function Profile() {
         <img
           src={user.avatar}
           alt={user.username}
-          className="mb-3 h-24 w-24 rounded-full border-4 border-white object-cover shadow-card"
+          className="mb-3 h-24 w-24 rounded-full border-4 border-base-surface object-cover shadow-card"
         />
         {editing ? (
           <div className="w-full max-w-xs">
@@ -104,15 +106,15 @@ export default function Profile() {
       </header>
 
       <div className="mb-6 grid grid-cols-3 gap-2">
-        <div className="rounded-2xl border border-base-border bg-white p-3 text-center shadow-card">
+        <div className="rounded-2xl border border-base-border bg-base-surface p-3 text-center shadow-card">
           <p className="text-lg font-extrabold text-ink-900">{displayedBalance !== undefined ? formatHype(displayedBalance) : '—'}</p>
           <p className="text-[11px] text-ink-400">Balance</p>
         </div>
-        <div className="rounded-2xl border border-base-border bg-white p-3 text-center shadow-card">
+        <div className="rounded-2xl border border-base-border bg-base-surface p-3 text-center shadow-card">
           <p className="text-lg font-extrabold text-ink-900">{formatHype(portfolioValue)}</p>
           <p className="text-[11px] text-ink-400">Portfolio</p>
         </div>
-        <div className="rounded-2xl border border-base-border bg-white p-3 text-center shadow-card">
+        <div className="rounded-2xl border border-base-border bg-base-surface p-3 text-center shadow-card">
           <p className="text-lg font-extrabold text-ink-900">{createdTrends.length}</p>
           <p className="text-[11px] text-ink-400">Trends</p>
         </div>
@@ -126,7 +128,7 @@ export default function Profile() {
               <div className="flex gap-2">
                 <button
                   onClick={() => setEditing(false)}
-                  className="tap-scale flex-1 rounded-full border border-base-border bg-white py-3 text-sm font-semibold text-ink-700"
+                  className="tap-scale flex-1 rounded-full border border-base-border bg-base-surface py-3 text-sm font-semibold text-ink-700"
                 >
                   Cancel
                 </button>
@@ -143,28 +145,50 @@ export default function Profile() {
             <>
               <button
                 onClick={() => navigate('/portfolio')}
-                className="tap-scale w-full rounded-full border border-base-border bg-white py-3 text-sm font-semibold text-ink-700 shadow-card"
+                className="tap-scale w-full rounded-full border border-base-border bg-base-surface py-3 text-sm font-semibold text-ink-700 shadow-card"
               >
                 View full portfolio
               </button>
               <div className="flex gap-2">
                 <button
                   onClick={() => setEditing(true)}
-                  className="tap-scale flex-1 rounded-full border border-base-border bg-white py-3 text-sm font-semibold text-ink-700 shadow-card"
+                  className="tap-scale flex-1 rounded-full border border-base-border bg-base-surface py-3 text-sm font-semibold text-ink-700 shadow-card"
                 >
                   Edit profile
                 </button>
                 <button
                   onClick={() => logout()}
-                  className="tap-scale flex-1 rounded-full border border-base-border bg-white py-3 text-sm font-semibold text-accent-down shadow-card"
+                  className="tap-scale flex-1 rounded-full border border-base-border bg-base-surface py-3 text-sm font-semibold text-accent-down shadow-card"
                 >
                   Log out
                 </button>
               </div>
+
+              <button
+                onClick={toggleTheme}
+                className="tap-scale flex w-full items-center justify-between rounded-full border border-base-border bg-base-surface px-5 py-3 shadow-card"
+              >
+                <span className="flex items-center gap-2 text-sm font-semibold text-ink-700">
+                  <span>{theme === 'dark' ? '🌙' : '☀️'}</span>
+                  Dark mode
+                </span>
+                <span
+                  className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
+                    theme === 'dark' ? 'bg-brand' : 'bg-base-border'
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 h-5 w-5 rounded-full bg-base-surface shadow-soft transition-transform ${
+                      theme === 'dark' ? 'translate-x-[22px]' : 'translate-x-0.5'
+                    }`}
+                  />
+                </span>
+              </button>
+
               {me?.role === 'ADMIN' && (
                 <button
                   onClick={() => navigate('/admin')}
-                  className="tap-scale w-full rounded-full border border-base-border bg-white py-3 text-sm font-semibold text-ink-700 shadow-card"
+                  className="tap-scale w-full rounded-full border border-base-border bg-base-surface py-3 text-sm font-semibold text-ink-700 shadow-card"
                 >
                   Admin dashboard
                 </button>
@@ -186,7 +210,7 @@ export default function Profile() {
                 <button
                   key={trend.id}
                   onClick={() => navigate(`/trend/${trend.id}`)}
-                  className="tap-scale overflow-hidden rounded-2xl border border-base-border bg-white text-left shadow-card"
+                  className="tap-scale overflow-hidden rounded-2xl border border-base-border bg-base-surface text-left shadow-card"
                 >
                   <SmartImage src={trend.image} alt={trend.name} className="h-24 w-full" />
                   <div className="p-2.5">

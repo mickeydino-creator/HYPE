@@ -2,6 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme tokens — "R G B" triplets consumed by tailwind.config.js via
+   rgb(var(--x) / <alpha-value>). Toggling the `dark` class on <html>
+   (see src/lib/theme.tsx) swaps every themed color at once. */
+:root {
+  --color-bg: 246 247 251;
+  --color-surface: 255 255 255;
+  --color-border: 238 240 245;
+  --color-muted: 241 243 248;
+  --color-ink-900: 20 21 31;
+  --color-ink-700: 63 67 84;
+  --color-ink-500: 107 112 134;
+  --color-ink-400: 154 160 180;
+  --color-ink-300: 194 198 214;
+  --color-brand: 17 17 20;
+  --color-brand-600: 0 0 0;
+}
+
+html.dark {
+  --color-bg: 10 10 12;
+  --color-surface: 23 23 27;
+  --color-border: 41 41 47;
+  --color-muted: 31 31 36;
+  --color-ink-900: 245 245 247;
+  --color-ink-700: 199 199 206;
+  --color-ink-500: 150 150 162;
+  --color-ink-400: 116 116 128;
+  --color-ink-300: 84 84 94;
+  --color-brand: 44 44 50;
+  --color-brand-600: 60 60 68;
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
 }
@@ -10,11 +41,19 @@ html, body, #root {
   height: 100%;
 }
 
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
 body {
-  background: #F6F7FB;
-  color: #14151F;
+  background: rgb(var(--color-bg));
+  color: rgb(var(--color-ink-900));
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overscroll-behavior-y: none;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 ::-webkit-scrollbar {
@@ -31,17 +70,17 @@ body {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgb(var(--color-surface) / 0.72);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(20, 21, 31, 0.06);
+  border: 1px solid rgb(var(--color-ink-900) / 0.06);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgb(var(--color-surface) / 0.88);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(20, 21, 31, 0.06);
+  border: 1px solid rgb(var(--color-ink-900) / 0.06);
 }
 
 .tap-scale {
@@ -54,6 +93,10 @@ body {
 .bg-noise {
   background-image: radial-gradient(circle at 15% -5%, rgba(59, 108, 255, 0.07), transparent 40%),
     radial-gradient(circle at 100% 0%, rgba(255, 174, 84, 0.06), transparent 35%);
+}
+html.dark .bg-noise {
+  background-image: radial-gradient(circle at 15% -5%, rgba(80, 120, 255, 0.1), transparent 40%),
+    radial-gradient(circle at 100% 0%, rgba(255, 174, 84, 0.05), transparent 35%);
 }
 
 .safe-top {
@@ -73,10 +116,10 @@ body {
   border-radius: 999px;
   background: linear-gradient(
     to right,
-    var(--fill-color, #111114) 0%,
-    var(--fill-color, #111114) var(--fill, 0%),
-    #EEF0F5 var(--fill, 0%),
-    #EEF0F5 100%
+    var(--fill-color, rgb(var(--color-brand))) 0%,
+    var(--fill-color, rgb(var(--color-brand))) var(--fill, 0%),
+    rgb(var(--color-border)) var(--fill, 0%),
+    rgb(var(--color-border)) 100%
   );
   outline: none;
   cursor: pointer;
@@ -88,8 +131,8 @@ body {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #fff;
-  border: 3px solid var(--fill-color, #111114);
+  background: rgb(var(--color-surface));
+  border: 3px solid var(--fill-color, rgb(var(--color-brand)));
   box-shadow: 0 2px 8px rgba(20, 21, 31, 0.18);
   cursor: pointer;
   margin-top: -8px;
@@ -99,8 +142,8 @@ body {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #fff;
-  border: 3px solid var(--fill-color, #111114);
+  background: rgb(var(--color-surface));
+  border: 3px solid var(--fill-color, rgb(var(--color-brand)));
   box-shadow: 0 2px 8px rgba(20, 21, 31, 0.18);
   cursor: pointer;
 }

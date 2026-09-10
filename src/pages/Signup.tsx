@@ -40,7 +40,7 @@ export default function Signup() {
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
           autoComplete="username"
-          className="w-full rounded-2xl border border-base-border bg-white px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
+          className="w-full rounded-2xl border border-base-border bg-base-surface px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
         />
         <input
           value={email}
@@ -48,7 +48,7 @@ export default function Signup() {
           type="email"
           placeholder="Email"
           autoComplete="email"
-          className="w-full rounded-2xl border border-base-border bg-white px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
+          className="w-full rounded-2xl border border-base-border bg-base-surface px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
         />
         <input
           value={password}
@@ -56,7 +56,7 @@ export default function Signup() {
           type="password"
           placeholder="Password (min. 8 characters)"
           autoComplete="new-password"
-          className="w-full rounded-2xl border border-base-border bg-white px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
+          className="w-full rounded-2xl border border-base-border bg-base-surface px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
         />
 
         {error && <p className="text-center text-xs font-medium text-accent-down">{error}</p>}
@@ -72,7 +72,7 @@ export default function Signup() {
 
       <p className="mt-6 text-center text-sm text-ink-400">
         Already have an account?{' '}
-        <Link to="/login" className="font-semibold text-brand">
+        <Link to="/login" className="font-semibold text-ink-900">
           Log in
         </Link>
       </p>

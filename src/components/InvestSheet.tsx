@@ -64,7 +64,7 @@ export default function InvestSheet({ trend, onClose, onInvested }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center">
       <div className="absolute inset-0 bg-ink-900/35 animate-fade-in" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-md animate-sheet-up rounded-t-[2rem] border border-base-border bg-white p-5 pb-8 shadow-sheet safe-bottom">
+      <div className="relative z-10 w-full max-w-md animate-sheet-up rounded-t-[2rem] border border-base-border bg-base-surface p-5 pb-8 shadow-sheet safe-bottom">
         <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-base-border" />
 
         {success ? (

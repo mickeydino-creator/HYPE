@@ -24,7 +24,7 @@ export default function Portfolio() {
       {loading && !summary && <p className="py-10 text-center text-sm text-ink-400">Loading…</p>}
 
       {summary && (
-        <div className="mb-6 rounded-xl2 border border-base-border bg-white p-5 shadow-card">
+        <div className="mb-6 rounded-xl2 border border-base-border bg-base-surface p-5 shadow-card">
           <p className="text-xs font-medium uppercase tracking-wide text-ink-400">Net worth</p>
           <p className="mb-3 text-4xl font-extrabold tracking-tight text-ink-900">{formatHype(summary.netWorth)}</p>
           <div className="flex items-center gap-4 text-sm">
@@ -51,9 +51,9 @@ export default function Portfolio() {
       <section className="mb-8">
         <h2 className="mb-3 text-sm font-bold text-ink-700">Your investments</h2>
         {summary && summary.positions.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-base-border bg-white py-10 text-center">
+          <div className="rounded-2xl border border-dashed border-base-border bg-base-surface py-10 text-center">
             <p className="text-sm text-ink-400">No investments yet.</p>
-            <button onClick={() => navigate('/')} className="mt-2 text-sm font-semibold text-brand">
+            <button onClick={() => navigate('/')} className="mt-2 text-sm font-semibold text-ink-900">
               Explore trends →
             </button>
           </div>
@@ -62,7 +62,7 @@ export default function Portfolio() {
             {summary?.positions.map((p) => (
               <div
                 key={p.trendId}
-                className="tap-scale flex items-center gap-3 rounded-2xl border border-base-border bg-white p-3 shadow-card"
+                className="tap-scale flex items-center gap-3 rounded-2xl border border-base-border bg-base-surface p-3 shadow-card"
                 onClick={() => navigate(`/trend/${p.trendId}`)}
               >
                 <SmartImage src={p.trendImage} alt={p.trendName} className="h-14 w-14 shrink-0 rounded-xl" />
@@ -101,7 +101,7 @@ export default function Portfolio() {
             {activity.map((a) => (
               <div
                 key={a.id}
-                className="flex items-center justify-between rounded-xl border border-base-border bg-white px-3 py-2.5 shadow-card"
+                className="flex items-center justify-between rounded-xl border border-base-border bg-base-surface px-3 py-2.5 shadow-card"
               >
                 <div className="flex items-center gap-2.5">
                   <span

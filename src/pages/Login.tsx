@@ -37,7 +37,7 @@ export default function Login() {
           onChange={(e) => setUsernameOrEmail(e.target.value)}
           placeholder="Username or email"
           autoComplete="username"
-          className="w-full rounded-2xl border border-base-border bg-white px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
+          className="w-full rounded-2xl border border-base-border bg-base-surface px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
         />
         <input
           value={password}
@@ -45,7 +45,7 @@ export default function Login() {
           type="password"
           placeholder="Password"
           autoComplete="current-password"
-          className="w-full rounded-2xl border border-base-border bg-white px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
+          className="w-full rounded-2xl border border-base-border bg-base-surface px-4 py-3 text-sm text-ink-900 shadow-card outline-none placeholder:text-ink-400"
         />
 
         {error && <p className="text-center text-xs font-medium text-accent-down">{error}</p>}
@@ -61,7 +61,7 @@ export default function Login() {
 
       <p className="mt-6 text-center text-sm text-ink-400">
         New here?{' '}
-        <Link to="/signup" className="font-semibold text-brand">
+        <Link to="/signup" className="font-semibold text-ink-900">
           Create an account
         </Link>
       </p>
