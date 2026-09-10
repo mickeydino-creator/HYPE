@@ -7,6 +7,7 @@ import PriceChart from '../components/PriceChart';
 import InvestSheet from '../components/InvestSheet';
 import SellSheet from '../components/SellSheet';
 import GlassSurface from '../components/GlassSurface';
+import SmartImage from '../components/SmartImage';
 
 const RANGES = [
   { label: '1H', points: 15 },
@@ -50,7 +51,7 @@ export default function TrendDetail() {
   return (
     <div className="min-h-screen bg-base-bg pb-32">
       <div className="relative">
-        <img src={trend.image} alt={trend.name} className="h-72 w-full bg-base-muted object-cover" />
+        <SmartImage src={trend.image} alt={trend.name} className="h-72 w-full" />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-4 safe-top">
           <button
             onClick={() => navigate(-1)}

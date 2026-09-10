@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { useCategories, useDebouncedValue, useTrendsFeed } from '../lib/hooks';
 import TrendCard from '../components/TrendCard';
 import InvestSheet from '../components/InvestSheet';
+import SmartImage from '../components/SmartImage';
 import type { Trend } from '../types';
 import { formatHype } from '../lib/format';
 
@@ -43,9 +44,7 @@ export default function Discover() {
                 onClick={() => setActive(t)}
                 className="tap-scale relative w-40 shrink-0 overflow-hidden rounded-2xl border border-base-border bg-white text-left shadow-card"
               >
-                <div className="relative h-24 w-full bg-base-muted">
-                  <img src={t.image} alt={t.name} className="h-full w-full object-cover" />
-                </div>
+                <SmartImage src={t.image} alt={t.name} className="h-24 w-full" />
                 <div className="p-2.5">
                   <p className="truncate text-xs font-bold text-ink-900">{t.name}</p>
                   <p className={clsx('text-[11px] font-semibold', positive ? 'text-accent-up' : 'text-accent-down')}>

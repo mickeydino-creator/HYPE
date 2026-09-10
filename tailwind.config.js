@@ -71,11 +71,21 @@ export default {
           '0%': { transform: 'translateY(100%)' },
           '100%': { transform: 'translateY(0)' },
         },
+        'shimmer': {
+          '0%': { backgroundPosition: '150% 0' },
+          '100%': { backgroundPosition: '-150% 0' },
+        },
+        'img-in': {
+          '0%': { opacity: 0, transform: 'scale(1.02)' },
+          '100%': { opacity: 1, transform: 'scale(1)' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         'pop': 'pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
         'sheet-up': 'sheet-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'shimmer': 'shimmer 1.8s ease-in-out infinite',
+        'img-in': 'img-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
       },
       transitionTimingFunction: {
         premium: 'cubic-bezier(0.16, 1, 0.3, 1)',

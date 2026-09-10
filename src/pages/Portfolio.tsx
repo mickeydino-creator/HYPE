@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { usePortfolio, useTransactions } from '../lib/hooks';
 import { formatHype, timeAgo } from '../lib/format';
 import SellSheet from '../components/SellSheet';
+import SmartImage from '../components/SmartImage';
 import type { Position } from '../types';
 
 export default function Portfolio() {
@@ -64,7 +65,7 @@ export default function Portfolio() {
                 className="tap-scale flex items-center gap-3 rounded-2xl border border-base-border bg-white p-3 shadow-card"
                 onClick={() => navigate(`/trend/${p.trendId}`)}
               >
-                <img src={p.trendImage} alt={p.trendName} className="h-14 w-14 rounded-xl bg-base-muted object-cover" />
+                <SmartImage src={p.trendImage} alt={p.trendName} className="h-14 w-14 shrink-0 rounded-xl" />
                 <div className="flex-1">
                   <p className="text-sm font-bold text-ink-900">{p.trendName}</p>
                   <p className="text-xs text-ink-400">{p.unitsOwned.toFixed(3)} units</p>

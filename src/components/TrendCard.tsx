@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import type { Trend } from '../types';
 import { formatHype, formatPct, timeAgo } from '../lib/format';
 import PriceChart from './PriceChart';
+import SmartImage from './SmartImage';
 
 export default function TrendCard({ trend, onInvest }: { trend: Trend; onInvest: (trend: Trend) => void }) {
   const navigate = useNavigate();
@@ -34,9 +35,7 @@ export default function TrendCard({ trend, onInvest }: { trend: Trend; onInvest:
 
       <h3 className="mb-3 text-lg font-extrabold leading-snug text-ink-900">{trend.name}</h3>
 
-      <div className="relative mb-3 aspect-[16/10] w-full overflow-hidden rounded-2xl bg-base-muted">
-        <img src={trend.image} alt={trend.name} className="h-full w-full object-cover" loading="lazy" />
-      </div>
+      <SmartImage src={trend.image} alt={trend.name} className="mb-3 aspect-[16/10] w-full rounded-2xl" />
 
       <p className="mb-4 line-clamp-2 text-sm leading-snug text-ink-500">{trend.description}</p>
 

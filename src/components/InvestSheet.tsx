@@ -5,6 +5,7 @@ import { useAuth } from '../lib/auth';
 import { investInTrend } from '../lib/hooks';
 import { ApiClientError } from '../lib/api';
 import SlideToConfirm from './SlideToConfirm';
+import SmartImage from './SmartImage';
 
 interface Props {
   trend: Trend | null;
@@ -79,7 +80,7 @@ export default function InvestSheet({ trend, onClose, onInvested }: Props) {
         ) : (
           <>
             <div className="mb-5 flex items-center gap-3">
-              <img src={trend.image} alt={trend.name} className="h-12 w-12 rounded-xl object-cover" />
+              <SmartImage src={trend.image} alt={trend.name} className="h-12 w-12 shrink-0 rounded-xl" />
               <div>
                 <h3 className="text-base font-bold text-ink-900">{trend.name}</h3>
                 <p className="text-xs text-ink-400">{formatHype(trend.price)} HYPE · Invest</p>

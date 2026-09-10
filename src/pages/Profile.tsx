@@ -4,6 +4,7 @@ import { useAuth } from '../lib/auth';
 import { useUserProfile } from '../lib/hooks';
 import { formatHype } from '../lib/format';
 import { ApiClientError } from '../lib/api';
+import SmartImage from '../components/SmartImage';
 
 export default function Profile() {
   const { username: routeUsername } = useParams();
@@ -187,7 +188,7 @@ export default function Profile() {
                   onClick={() => navigate(`/trend/${trend.id}`)}
                   className="tap-scale overflow-hidden rounded-2xl border border-base-border bg-white text-left shadow-card"
                 >
-                  <img src={trend.image} alt={trend.name} className="h-24 w-full bg-base-muted object-cover" />
+                  <SmartImage src={trend.image} alt={trend.name} className="h-24 w-full" />
                   <div className="p-2.5">
                     <p className="truncate text-xs font-bold text-ink-900">{trend.name}</p>
                     <p className={positive ? 'text-[11px] font-semibold text-accent-up' : 'text-[11px] font-semibold text-accent-down'}>
