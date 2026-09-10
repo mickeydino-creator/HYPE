@@ -6,6 +6,7 @@ import { formatHype, timeAgo } from '../lib/format';
 import PriceChart from '../components/PriceChart';
 import InvestSheet from '../components/InvestSheet';
 import SellSheet from '../components/SellSheet';
+import GlassSurface from '../components/GlassSurface';
 
 const RANGES = [
   { label: '1H', points: 15 },
@@ -137,21 +138,32 @@ export default function TrendDetail() {
         </section>
 
         <div className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md px-4 pb-6 safe-bottom">
-          <div className="flex gap-3 rounded-full border border-base-border bg-white/95 p-2 shadow-nav backdrop-blur-md">
-            <button
-              onClick={() => setSheet('sell')}
-              disabled={!holding}
-              className="tap-scale flex-1 rounded-full border border-base-border py-3 text-sm font-bold text-ink-700 disabled:opacity-30"
-            >
-              Sell
-            </button>
-            <button
-              onClick={() => setSheet('invest')}
-              className="tap-scale flex-1 rounded-full bg-brand py-3 text-sm font-bold text-white shadow-glow"
-            >
-              Invest
-            </button>
-          </div>
+          <GlassSurface
+            width="100%"
+            height={68}
+            borderRadius={28}
+            backgroundOpacity={0.7}
+            blur={8}
+            displace={2}
+            distortionScale={-140}
+            className="w-full border border-base-border shadow-nav"
+          >
+            <div className="flex w-full gap-3 px-2">
+              <button
+                onClick={() => setSheet('sell')}
+                disabled={!holding}
+                className="tap-scale flex-1 rounded-full border border-base-border py-3 text-sm font-bold text-ink-700 disabled:opacity-30"
+              >
+                Sell
+              </button>
+              <button
+                onClick={() => setSheet('invest')}
+                className="tap-scale flex-1 rounded-full bg-brand py-3 text-sm font-bold text-white shadow-glow"
+              >
+                Invest
+              </button>
+            </div>
+          </GlassSurface>
         </div>
       </div>
 

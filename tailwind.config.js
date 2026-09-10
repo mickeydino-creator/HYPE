@@ -20,11 +20,11 @@ export default {
           300: '#C2C6D6',
         },
         brand: {
-          DEFAULT: '#3B6CFF',
-          50: '#EEF3FF',
-          100: '#DEE8FF',
-          200: '#C1D3FF',
-          600: '#2F58E0',
+          DEFAULT: '#111114',
+          50: '#F4F4F5',
+          100: '#E4E4E7',
+          200: '#C7C7CC',
+          600: '#000000',
         },
         accent: {
           up: '#1FAE5C',
@@ -53,7 +53,7 @@ export default {
         card: '0 2px 6px rgba(20, 21, 31, 0.03), 0 12px 28px -16px rgba(20, 21, 31, 0.12)',
         nav: '0 8px 30px -8px rgba(20, 21, 31, 0.18)',
         sheet: '0 -12px 40px -12px rgba(20, 21, 31, 0.18)',
-        glow: '0 8px 20px -6px rgba(59, 108, 255, 0.35)',
+        glow: '0 8px 20px -6px rgba(17, 17, 20, 0.4)',
       },
       backdropBlur: {
         xs: '2px',

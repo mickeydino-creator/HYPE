@@ -1,10 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
+import GlassSurface from './GlassSurface';
 
 const items = [
   { to: '/', label: 'Home', icon: HomeIcon },
   { to: '/discover', label: 'Discover', icon: DiscoverIcon },
-  { to: '/create', label: 'Create', icon: PlusIcon },
   { to: '/portfolio', label: 'Portfolio', icon: PortfolioIcon },
   { to: '/profile', label: 'Profile', icon: ProfileIcon },
 ];
@@ -13,38 +13,64 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 safe-bottom">
       <div className="mx-auto max-w-md px-3 pb-3">
-        <div className="flex items-center justify-between rounded-[1.75rem] border border-base-border bg-white/95 px-2 py-2 shadow-nav backdrop-blur-md">
-          {items.map(({ to, label, icon: Icon }) => {
-            const isCreate = to === '/create';
-            return (
-              <NavLink
-                key={to}
-                to={to}
-                end={to === '/'}
-                className={() =>
-                  clsx(
-                    'tap-scale flex flex-1 flex-col items-center justify-center gap-1 rounded-2xl py-2 transition-colors',
-                    isCreate && 'relative -mt-6'
-                  )
-                }
-              >
-                {({ isActive }) =>
-                  isCreate ? (
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white shadow-glow">
-                      <Icon active={isActive} />
-                    </div>
-                  ) : (
+        <div className="relative">
+          <GlassSurface
+            width="100%"
+            height={68}
+            borderRadius={28}
+            backgroundOpacity={0.7}
+            blur={8}
+            displace={2}
+            distortionScale={-140}
+            className="w-full border border-base-border shadow-nav"
+          >
+            <div className="flex w-full items-center justify-between px-2">
+              {items.slice(0, 2).map(({ to, label, icon: Icon }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={to === '/'}
+                  className="tap-scale flex flex-1 flex-col items-center justify-center gap-1 rounded-2xl py-2"
+                >
+                  {({ isActive }) => (
                     <>
                       <Icon active={isActive} />
                       <span className={clsx('text-[10px] font-semibold', isActive ? 'text-brand' : 'text-ink-400')}>
                         {label}
                       </span>
                     </>
-                  )
-                }
-              </NavLink>
-            );
-          })}
+                  )}
+                </NavLink>
+              ))}
+
+              <span className="w-12 shrink-0" aria-hidden="true" />
+
+              {items.slice(2).map(({ to, label, icon: Icon }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={to === '/'}
+                  className="tap-scale flex flex-1 flex-col items-center justify-center gap-1 rounded-2xl py-2"
+                >
+                  {({ isActive }) => (
+                    <>
+                      <Icon active={isActive} />
+                      <span className={clsx('text-[10px] font-semibold', isActive ? 'text-brand' : 'text-ink-400')}>
+                        {label}
+                      </span>
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </div>
+          </GlassSurface>
+
+          <NavLink
+            to="/create"
+            className="tap-scale absolute left-1/2 top-0 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-brand text-white shadow-glow"
+          >
+            <PlusIcon />
+          </NavLink>
         </div>
       </div>
     </nav>
@@ -52,7 +78,7 @@ export default function BottomNav() {
 }
 
 function iconColor(active?: boolean) {
-  return active ? '#3B6CFF' : '#9AA0B4';
+  return active ? '#111114' : '#9AA0B4';
 }
 
 function HomeIcon({ active }: { active?: boolean }) {

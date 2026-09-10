@@ -73,8 +73,8 @@ body {
   border-radius: 999px;
   background: linear-gradient(
     to right,
-    var(--fill-color, #3B6CFF) 0%,
-    var(--fill-color, #3B6CFF) var(--fill, 0%),
+    var(--fill-color, #111114) 0%,
+    var(--fill-color, #111114) var(--fill, 0%),
     #EEF0F5 var(--fill, 0%),
     #EEF0F5 100%
   );
@@ -89,7 +89,7 @@ body {
   height: 22px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid var(--fill-color, #3B6CFF);
+  border: 3px solid var(--fill-color, #111114);
   box-shadow: 0 2px 8px rgba(20, 21, 31, 0.18);
   cursor: pointer;
   margin-top: -8px;
@@ -100,7 +100,7 @@ body {
   height: 22px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid var(--fill-color, #3B6CFF);
+  border: 3px solid var(--fill-color, #111114);
   box-shadow: 0 2px 8px rgba(20, 21, 31, 0.18);
   cursor: pointer;
 }
